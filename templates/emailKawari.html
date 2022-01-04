@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script>
+	$(document).ready(function() {
+		{% for c in combinedz %}
+			$("#callback").innerHTML = $("#callback").innerHTML + "{{c}}"
+		{% endfor %}
+		});
+	</script>
+</head>
+<body>
+<div id="callback"></div>
+</body>

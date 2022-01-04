@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="generator" content="Responsive Site Designer 1.5.1419">
+  <title>AGXactly Web Portal</title>
+</head>
+
+<body>
+	To update the flyover data in the database, just save the "Inputs" tab of the google sheet as a *.tsv file, and upload it here.
+	<br>After upload, you will be automatically forwarded to the login screen.
+	<br>
+	<form name = 'file_form' method='post' enctype='multipart/form-data'>
+	<fieldset>
+		<legend>
+			<b>TSV version of the google sheet:</b>:
+		</legend>
+		<input type=file name='file'>
+		<input type='submit' name='csvFile' value='Upload'>
+	</fieldset>
+	</form>
+</body>
+
+</html>
+
+
+

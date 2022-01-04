@@ -1,0 +1,2177 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<title>AGXactly Operations</title>
+
+		<meta name="description" content="Source code generated using layoutit.com">
+		<meta name="author" content="LayoutIt!">
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+
+		<script src="{{url_for('static', filename='simplePortalJs/scripts.js')}}"></script>
+		<link href="{{url_for('static', filename='simplePortalCss/style.css')}}" rel="stylesheet">
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>	
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		<script type="text/javascript" charset="utf-8">
+		$(document).ready(function() {
+		
+			var targetEvents = []
+			var targetPercents = []
+			
+			{% for key, value in targetValues.items() %}
+
+				targetEvents.push("{{key}}");
+				targetPercents.push("{{value}}");
+				
+				var targetValueBoxID = "{{key}}" + "Target";
+				var targetValueBox = document.getElementById(targetValueBoxID);
+				targetValueBox.value = "{{value}}";
+
+			{% endfor %}
+			
+			var EventsTabTableArray = [];
+			
+			
+			function formatPercentExceedingOrBelow(target, reality)
+			{
+				var diff = reality - target;
+				if (diff <= 0)
+				{
+					return '<i class="fas fa-thumbs-up" style="color:green;"></i>'
+				}
+				else if (5.0 >= diff && diff > 0)
+				{
+					return '<span style="color:gold;font-weight:bold;">!</span><i class="fas fa-exclamation-triangle" style="color:gold;">!</i>'
+				}
+				else if (10.0 >= diff && diff > 5.0)
+				{
+					return '<span style="color:orange;font-weight:bold;">!!</span><i class="fas fa-exclamation-triangle" style="color:orange;font-weight:bold;">!!</i>'
+				}
+				else
+				{
+					return '<span style="color:red;font-weight:bold;">!!!<i class="fas fa-exclamation-triangle" style="color:red;font-weight:bold;">!!!</i>'
+				}			
+			}
+			
+			
+				
+			{% for d in eventAnalysisTable %}
+				EventsTabTableArray.push("{{d}}")
+			{% endfor %}
+			
+			count = 1
+			for (var i = 0; i < EventsTabTableArray.length; i = i+3) 
+			{
+				var thisTargetPercent = targetPercents[targetEvents.indexOf(EventsTabTableArray[i].toLowerCase())]
+				if (thisTargetPercent == null)
+				{
+					thisTargetPercent = EventsTabTableArray[i+2]
+				}
+				if (count%2 == 0) {
+					$('.EventLossesTable').append('<tr class="trEven"><td style="width:20%">' + EventsTabTableArray[i] + '</td><td style="width:20%">' + EventsTabTableArray[i+1] + '</td><td style="width:20%">' + EventsTabTableArray[i+2] + '%</td><td  style="width:20%">' + thisTargetPercent + '%</td><td style="width:20%">' + formatPercentExceedingOrBelow(thisTargetPercent, EventsTabTableArray[i+2]) + '</td></tr>');
+				} else {
+					$('.EventLossesTable').append('<tr class="trOdd"><td style="width:20%">' + EventsTabTableArray[i] + '</td><td style="width:20%">' + EventsTabTableArray[i+1] + '</td><td style="width:20%">' + EventsTabTableArray[i+2] + '%</td><td  style="width:20%">' + thisTargetPercent + '%</td><td style="width:20%">' + formatPercentExceedingOrBelow(thisTargetPercent, EventsTabTableArray[i+2]) + '</td></tr>');
+				}
+				count += 1
+			}
+			
+		
+		
+
+			var overallNDVIArray = [];
+
+			{% for d in PackagedNDVIOverall %}
+				overallNDVIArray.push("{{d}}")
+			{% endfor %}
+
+			count = 1
+			for (var i = 0; i < overallNDVIArray.length; i = i+8) 
+			{
+				var iconn = "<i class='fas fa-minus' style='color:gold;'>"
+				 if (parseFloat(overallNDVIArray[i+6]) > 0)
+				 {
+					iconn = "<i class='fas fa-arrow-circle-up' style='color:green;'>"
+				 }
+				 if (parseFloat(overallNDVIArray[i+6]) < 0)
+				 {
+					iconn = "<i class='fas fa-arrow-circle-down' style='color:red;'>"
+				 }
+				
+				if (count%2 == 0) {
+					$('.NDVIOverallTable').append('<tr class="trEven"><td style="width:15%">' + overallNDVIArray[i] + '</td><td style="width:15%">' + overallNDVIArray[i+1] + '</td><td style="width:15%">' + overallNDVIArray[i+2] + '</td><td style="width:15%">' + overallNDVIArray[i+3] + '</td><td style="width:15%">' + overallNDVIArray[i+4] + '</td><td style="width:15%">' + iconn + '</td><td style="width:15%">' + overallNDVIArray[i+6] + '</td><td style="width:100%">' + overallNDVIArray[i+7] + '%</td></tr>');
+				} else {
+					$('.NDVIOverallTable').append('<tr class="trOdd"><td style="width:15%">' + overallNDVIArray[i] + '</td><td style="width:15%">' + overallNDVIArray[i+1] + '</td><td style="width:15%">' + overallNDVIArray[i+2] + '</td><td style="width:15%">' + overallNDVIArray[i+3] + '</td><td style="width:15%">' + overallNDVIArray[i+4] + '</td><td style="width:15%">' + iconn + '</td><td style="width:15%">' + overallNDVIArray[i+6] + '</td><td style="width:100%">' + overallNDVIArray[i+7] + '%</td></tr>');
+				}
+				count += 1
+			}		
+
+		
+
+
+		
+		
+			var NDVIEventsAndAverageArray = [];
+				
+			{% for d in PackagedNDVIEventAndAverage %}
+				NDVIEventsAndAverageArray.push("{{d}}")
+			{% endfor %}
+
+			count = 1
+			for (var i = 0; i < NDVIEventsAndAverageArray.length; i = i+2) 
+			{
+				if (count%2 == 0) {
+					$('.NDVIEventsAndAverageTable').append('<tr class="trEven"><td>' + NDVIEventsAndAverageArray[i] + '</td><td style="width:100%">' + NDVIEventsAndAverageArray[i+1] + '</td></tr>');
+				} else {
+					$('.NDVIEventsAndAverageTable').append('<tr class="trOdd"><td>' + NDVIEventsAndAverageArray[i] + '</td><td style="width:100%">' + NDVIEventsAndAverageArray[i+1] + '</td></tr>');
+				}
+				count += 1
+			}
+		
+			{% if show_feedback_modal %}
+				document.getElementById("getRanchReportFeedback").click()
+			{% endif %}
+
+			
+			loadWidgetChecks() // loads the widget check information into the modal
+			initializeWidgets() // shows and hides widgets based on the modal checks, and draws charts
+			
+			
+			var canvas = $("#eventsPieChartPanel .canvasjs-chart-canvas").get(0);
+			var dataURL = canvas.toDataURL('image/jpeg');
+			
+			$.ajax({ 
+				url: "{{ url_for('chartsToImages') }}", 
+				type: 'POST', 
+				data: {
+					'client': "{{client}}",
+					'eventsPieChart': dataURL,
+				},
+			});	
+			
+			})
+		</script>
+		
+		<script type="text/javascript" charset="utf-8">
+		$(document).ready(function() {
+		
+			// On the ranch report feedback popup (if we're showing one), we have to
+			// populate the check boxes with any requests the client had made previously.
+			// The current client wishes re: the ranch report are all stored in an entity in the Google Datastore Database
+			// Here, we get all the info and check/uncheck the boxes of the "How was your weekly ranch report?" modal appropriately.
+			
+			var mc = {{modal_checks|safe}}
+			
+			
+			if (mc['lossData'] == true)
+			{
+				$("#lossData").prop('checked', true)
+			} else { $("#lossData").prop('checked', false) }
+			if (mc['lossTrend'] == true)
+			{
+				$("#lossTrend").prop('checked', true)
+			} else { $("#lossTrend").prop('checked', false) }
+			if (mc['topFive'] == true)
+			{
+				$("#topFive").prop('checked', true)
+			} else { $("#topFive").prop('checked', false) }
+			if (mc['bottomFive'] == true)
+			{
+				$("#bottomFive").prop('checked', true)
+			} else { $("#bottomFive").prop('checked', false) }
+			if (mc['healthData'] == true)
+			{
+				$("#healthData").prop('checked', true)
+			} else { $("#healthData").prop('checked', false) }
+			if (mc['contributingActivities'] == true)
+			{
+				$("#contributingActivities").prop('checked', true)
+			} else { $("#contributingActivities").prop('checked', false) }		
+			
+			
+			// let's also check the 'Show historical data, too' checkbox (or not) depending on what it was last time
+			{% if historicalDataChecked %}
+				$("#historicalData").prop('checked', true)
+			{% else %}
+				$("#historicalData").prop('checked', false)
+			{% endif %}
+			
+		});
+		</script>
+		
+		<script>
+		function compareDataPointY(dataPoint1, dataPoint2) {
+			  return dataPoint2.y - dataPoint1.y;
+		}
+		
+		function makeTopFives()
+		{
+			var barChart = new CanvasJS.Chart("barChartContainer-topFives", {
+			animationEnabled: true,
+			zoomEnabled: true,
+			panEnabled: true,
+			title: {
+					text: "Bottom 5 performing ranches: Crops Lost",
+					fontFamily: "Verdana, Geneva",
+					fontSize: 10
+				},
+				data: [{
+					type: "column",
+					indexLabel: "{y}",
+					showInLegend: false,
+					dataPoints: [{{top_five_ranch_crops_lost|safe}}]
+				}]
+			});
+			barChart.options.data[0].dataPoints.sort(compareDataPointY);
+			barChart.render();
+			
+			var barChart2 = new CanvasJS.Chart("barChartContainer-topFivesAsPercent", {
+			animationEnabled: true,
+			zoomEnabled: true,
+			panEnabled: true,
+			title: {
+					text: "Bottom 5 performing ranches: % Lost",
+					fontFamily: "Verdana, Geneva",
+					fontSize: 10
+				},
+				data: [{
+					type: "column",
+					indexLabel: "{y}",
+					showInLegend: false,
+					dataPoints: [{{top_five_ranch_crops_lost_as_percent|safe}}]
+				}]
+			});
+			barChart2.options.data[0].dataPoints.sort(compareDataPointY);
+			barChart2.render();
+		}
+		
+		function makeActivities()
+		{
+			var lineChart = new CanvasJS.Chart("contributingActivitiesPanel", {
+				animationEnabled: true,
+				zoomEnabled: true,
+				panEnabled: true,
+				title:{
+					text: "Crops Lost Per Date Flown and Events",
+					fontFamily: "Verdana, Geneva",
+					fontSize: 10
+					},
+				legend: {
+					cursor: "pointer",
+					itemclick: toggleDataSeries,
+					horizontalAlign: "center", 
+					verticalAlign: "top", 
+					fontSize: 15
+				},
+				data: [{{crops_lost_per_date_flown|safe}}]
+			});
+			lineChart.render();
+		}
+		
+		function initializeWidgets()
+		{
+			var widgets = ['expectedCountW', 'actualCountW', 'totalCurrentLossW', 'flyoverNotesW', 'lossTrendW', 'lossOverTimeW', 'topFiveW', 'topFiveW', 'contributingActivitiesW', 'contributingActivitiesChartW', 'eventsPieChartW', 'eventsChartW', 'eventsOverTimeW', 'ndviAverageW', 'ndviAverageByEventW', 'ndviAveragePerDateW', 'ndviChangeW', 'ndviOverTimeW']
+			
+			var panels = ['expectedCountPanel', 'actualCountPanel', 'totalCurrentLossPanel', 'flyoverNotesPanel', 'lossTrendPanel', 'lossOverTimePanel', 'topFivePanel', 'topFiveTwoPanel', 'contributingActivitiesPanel', 'contributingActivitiesChartPanel', 'eventsPieChartPanel', 'eventsChartPanel', 'eventsOverTimePanel', 'ndviAveragePanel', 'ndviAverageByEventPanel', 'ndviAveragePerDatePanel', 'ndviChangePanel', 'ndviOverTimePanel']
+			
+			for (var p=0; p < panels.length; p++)
+			{
+				$("#" + panels[p]).hide();
+			}
+			
+			for (var w=0; w < widgets.length; w++)
+			{
+				if ($("#" + widgets[w]).prop('checked') == true)
+				{
+					if (widgets[w] == "topFiveW")
+					{
+						$("#topFiveTwoPanel").show();
+					}
+					
+					$("#" + panels[w]).show();
+					drawChart(panels[w]);
+				}
+			}
+		
+		}
+		
+		function loadWidgetChecks()
+		{
+			// When the client views the dashboard, certain widgets are invisible, while
+			// certain widgets are visible.  Their preferences are stored between sessions in a special
+			// entity in Google Cloud Datastore.  Here, we get the preferences, then
+			
+			// 1) make the particular widget be hidden/shown on the dashboard and
+			// 2) uncheck/check the box related to that widget on the "Edit widgets" modal
+			
+			var vpc = {{view_preference_checks|safe}}
+			
+			var widgets = ['expectedCountW', 'actualCountW', 'totalCurrentLossW', 'flyoverNotesW', 'lossTrendW', 'lossOverTimeW', 'topFiveW', 'topFiveW', 'contributingActivitiesW', 'contributingActivitiesChartW', 'eventsPieChartW', 'eventsChartW', 'eventsOverTimeW', 'ndviAverageW', 'ndviAverageByEventW', 'ndviAveragePerDateW', 'ndviChangeW', 'ndviOverTimeW']
+			
+			var panels = ['expectedCountPanel', 'actualCountPanel', 'totalCurrentLossPanel', 'flyoverNotesPanel', 'lossTrendPanel', 'lossOverTimePanel', 'topFivePanel', 'topFiveTwoPanel', 'contributingActivitiesPanel', 'contributingActivitiesChartPanel', 'eventsPieChartPanel', 'eventsChartPanel', 'eventsOverTimePanel', 'ndviAveragePanel', 'ndviAverageByEventPanel', 'ndviAveragePerDatePanel', 'ndviChangePanel', 'ndviOverTimePanel']
+			
+			for (var w=0; w < widgets.length; w++)
+			{
+				if (vpc[widgets[w]] == true)
+				{
+					$("#" + widgets[w]).prop('checked', true);
+					$("#" + panels[w]).show();
+					if (widgets[w] == "topFiveW")
+					{
+						$("#topFiveTwoPanel").show();
+					}
+				} 
+				else
+				{
+					$("#" + widgets[w]).prop('checked', false);
+					$("#" + panels[w]).hide();
+					if (widgets[w] == "topFiveW")
+					{
+						$("#topFiveTwoPanel").hide();
+					}
+				}
+			}
+		}
+		
+		function sendWidgetChecksToBackend()
+		{
+			// This function is called when the user clicks the "Apply and close" button on the modal.
+			// In addition to updating the portal view in real-time (which we did above), we should also
+			// send information re: the client's current view preferences to the back-end, so those view preferences
+			// can be saved in the database and available next time
+			$.ajax({ 
+				url: "{{ url_for('updateViewPreferences') }}", 
+				type: 'POST', 
+				data: {
+					'expectedCountW': eval($("#expectedCountW").prop('checked')),
+					'actualCountW': eval($("#actualCountW").prop('checked')),
+					'totalCurrentLossW': eval($("#totalCurrentLossW").prop('checked')),
+					'flyoverNotesW': eval($("#flyoverNotesW").prop('checked')),
+					'lossTrendW': eval($("#lossTrendW").prop('checked')),
+					'lossOverTimeW': eval($("#lossOverTimeW").prop('checked')),
+					'topFiveW': eval($("#topFiveW").prop('checked')),
+					'contributingActivitiesW': eval($("#contributingActivitiesW").prop('checked')),
+					'contributingActivitiesChartW': eval($("#contributingActivitiesChartW").prop('checked')),
+					'eventsPieChartW': eval($("#eventsPieChartW").prop('checked')),
+					'eventsChartW': eval($("#eventsChartW").prop('checked')),
+					'eventsOverTimeW': eval($("#eventsOverTimeW").prop('checked')),
+					'ndviAverageW': eval($("#ndviAverageW").prop('checked')),
+					'ndviAverageByEventW': eval($("#ndviAverageByEventW").prop('checked')),
+					'ndviAveragePerDateW': eval($("#ndviAveragePerDateW").prop('checked')),
+					'ndviChangeW': eval($("#ndviChangeW").prop('checked')),
+					'ndviOverTimeW': eval($("#ndviOverTimeW").prop('checked')),
+				},
+				success: function(){ 
+					
+				}
+			});	
+			initializeWidgets();
+		}			
+			
+		
+		
+		</script>
+		
+		<script type="text/javascript" charset="utf-8">
+		$(document).ready(function() {
+		
+			$("#showBottomFiveAsPercent").click(function(){
+		
+				function compareDataPointY(dataPoint1, dataPoint2) {
+				  return dataPoint2.y - dataPoint1.y;
+			}
+
+			var bottomFiveAsPercentBarChart = new CanvasJS.Chart("barChartContainer-topFivesAsPercent", {
+				animationEnabled: true,
+				zoomEnabled: true,
+				panEnabled: true,
+				title: {
+						text: "Top 5 performing ranches: % Lost",
+						fontFamily: "Verdana, Geneva",
+						fontSize: 10
+					},
+					data: [{
+						type: "column",
+						indexLabel: "{y}",
+						showInLegend: false,
+						dataPoints: [{{bottom_five_ranch_crops_lost_as_percent|safe}}]
+					}]
+				});
+				bottomFiveAsPercentBarChart.options.data[0].dataPoints.sort(compareDataPointY);
+				bottomFiveAsPercentBarChart.render();
+		}); 
+		$("#showTopFiveAsPercent").click(function(){
+		
+			function compareDataPointY(dataPoint1, dataPoint2) {
+			  return dataPoint2.y - dataPoint1.y;
+			}
+
+			var topFiveAsPercentBarChart = new CanvasJS.Chart("barChartContainer-topFivesAsPercent", {
+				animationEnabled: true,
+				zoomEnabled: true,
+				panEnabled: true,
+				title: {
+						text: "Bottom 5 performing ranches: % lost",
+						fontFamily: "Verdana, Geneva",
+						fontSize: 10
+					},
+					data: [{
+						type: "column",
+						indexLabel: "{y}",
+						showInLegend: false,
+						dataPoints: [{{top_five_ranch_crops_lost_as_percent|safe}}]
+					}]
+				});
+				topFiveAsPercentBarChart.options.data[0].dataPoints.sort(compareDataPointY);
+				topFiveAsPercentBarChart.render();
+		}); 
+		
+ 		$("#showBottomFive").click(function(){
+		
+			function compareDataPointY(dataPoint1, dataPoint2) {
+			  return dataPoint2.y - dataPoint1.y;
+			}
+
+			var bottomFiveBarChart = new CanvasJS.Chart("barChartContainer-topFives", {
+			animationEnabled: true,
+			zoomEnabled: true,
+			panEnabled: true,
+			title: {
+					text: "Top 5 performing ranches: Crops Lost",
+					fontFamily: "Verdana, Geneva",
+					fontSize: 10
+				},
+				data: [{
+					type: "column",
+					indexLabel: "{y}",
+					showInLegend: false,
+					dataPoints: [{{bottom_five_ranch_crops_lost|safe}}]
+				}]
+			});
+			bottomFiveBarChart.options.data[0].dataPoints.sort(compareDataPointY);
+			bottomFiveBarChart.render();
+		}); 		
+ 		$("#showTopFive").click(function(){
+		
+			function compareDataPointY(dataPoint1, dataPoint2) {
+			  return dataPoint2.y - dataPoint1.y;
+			}
+
+			var topFiveBarChart = new CanvasJS.Chart("barChartContainer-topFives", {
+			animationEnabled: true,
+			zoomEnabled: true,
+			panEnabled: true,
+			title: {
+					text: "Bottom 5 performing ranches: Crops Lost",
+					fontFamily: "Verdana, Geneva",
+					fontSize: 10
+				},
+				data: [{
+					type: "column",
+					indexLabel: "{y}",
+					showInLegend: false,
+					dataPoints: [{{top_five_ranch_crops_lost|safe}}]
+				}]
+			});
+			topFiveBarChart.options.data[0].dataPoints.sort(compareDataPointY);
+			topFiveBarChart.render();
+			}); 
+			
+		var alreadyAppended = []
+
+		{% for r in ranchesForUi %}
+			// first, append only the ranch names to the RanchBlockSelector dropdown
+			var thisRanchText = "{{r}}";
+			var thisRanch = thisRanchText.substring(0, thisRanchText.indexOf(" "));
+			
+			if (alreadyAppended.includes(thisRanch) == false)
+			{
+				
+				var o = new Option(thisRanch, thisRanch);
+				$(o).html(thisRanch);
+				$("#RanchBlockSelector").append(o);
+				
+				var oo = new Option(thisRanch, thisRanch);
+				$(oo).html(thisRanch);
+				$("#NotificationsRanchBlockSelector").append(oo);
+				
+				var ooo = new Option(thisRanch, thisRanch);
+				$(ooo).html(thisRanch);
+				$("#AlertsRanchBlockSelector").append(ooo);
+				
+				alreadyAppended.push(thisRanch);
+			}
+
+			
+			// next, make a string of all ranch block sublot names (csv), hidden
+			// this string will be used to retreive all names for filtering
+			$("#rbsString").append("{{r}}");
+			$("#rbsString").append(",");
+			
+			
+			var thisRanchText = "{{r}}";
+			var s = new Option(thisRanchText, thisRanchText);
+			$(s).html(thisRanchText);
+			$("#ranchesForTimingSelector").append(s);
+				
+
+		{% endfor %}
+
+		if (alreadyAppended.length == 0)
+		{
+			document.getElementById("noEntities").click()
+		}
+		
+		});
+		</script>
+		
+
+		
+		</head>
+	
+	
+	
+	<style>
+		.body {
+			padding: 10px 10px 10px 10px
+		}
+	
+		/* Style the tab */
+		.Tabs {
+		  height: 100%; /* Full-height: remove this if you want "auto" height */
+		  width: 160px; /* Set the width of the sidebar */
+		  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+		  z-index: 1; /* Stay on top */
+		  top: 0; /* Stay at the top */
+		  left: 0;
+		  background-color: grey; /* Black */
+		  overflow-x: hidden; /* Disable horizontal scroll */
+		  padding-top: 20px;
+		}
+
+		/* The navigation menu links */
+		.nav-item{
+		  padding: 6px 8px 6px 16px;
+		  text-decoration: none;
+		  font-size: 18px;
+		  color: #B5B5B5;
+		  display: block;
+		}
+
+		/* When you mouse over the navigation links, change their color */
+		.nav-item:hover {
+		  color: #f1f1f1;
+		  cursor: pointer;
+		}
+	
+		.card-header {
+			background-color: #547634;
+			color: #deab3d;
+			font-size: 20px;
+			padding: 6px 8px 6px 16px;
+			font-style: bold;
+		}
+		
+		.card-body {
+			margin-bottom: 10px;
+			font-size: 16px;
+		}
+		
+		.panel {
+			border-radius: 5px 5px 5px 5px;
+			margin-top: 10px;
+		}
+		
+		.header-today-button {
+			border-radius: 0px 5px 5px 0px;
+			font-size: 12px;
+			background-color: #f2f2f2;
+		}
+		
+		.TextInput {
+		  border-radius: 5px 5px 5px 5px;
+		  width: 70px;
+		  font-size: 12px;
+		}
+
+		.EndDateInput {
+		  border-radius: 5px 0px 0px 5px;
+		  width: 70px;
+		  font-size: 12px;
+		}
+		
+		.dashboard-button {
+			border-radius: 5px 5px 5px 5px;
+			font-size: 12px;
+			background-color: #c7c4b8;
+			margin: 6px 6px 6px 6px;
+		}
+		
+		.filter-button {
+			border-radius: 5px 5px 5px 5px;
+			font-size: 12px;
+			background-color: #547634;
+			margin: 6px 6px 6px 6px;
+			color: #deab3d
+		}
+		
+		.overallTable, .NDVIOverallTable, .EventLossesTable, .TargetEventPercentsTable { 
+		  border-collapse: collapse;
+		  width: 100%;
+		  overflow: auto;
+		  display: block;
+		  <!-- height: 400px; -->
+		  <!-- overflow-y:scroll; -->
+		}
+
+
+		.NDVIEventsAndAverageTable {
+		  border-collapse: collapse;
+		  width: 100%;
+		  overflow: auto;
+		  display: block;
+		  height: 300px;
+		  overflow-y:scroll;
+		}
+
+		.cropsLostTable {
+		  border-collapse: collapse;
+		  width: 100%;
+		  overflow: auto;
+		  display: block;
+		  <!-- height: 200px; -->
+		  <!-- overflow-y:scroll; -->
+		}
+
+		th, td {
+		  text-align: center;
+		  padding: 8px;
+		}
+
+
+		th {
+			white-space: nowrap;
+		}
+
+		.trEven {background-color: #f4f4f4;}
+		.trOdd {background-color: #ddebda;}
+		.tableHeader {
+			background-color: #547634;
+			color: white;
+			position: sticky; 
+			top: 0;
+		}
+		thead {
+			max-height: 500px;
+			overflow: auto;
+			background-color: #547634;
+			color: white;
+			position: sticky; 
+			top: 0;
+		}
+		tbody {
+			max-height: 500px;
+			overflow: auto;
+		}
+		th.sticky-header {
+		  position: sticky;
+		  top: 0;
+		  z-index: 10;
+		  background-color: #547634;
+		}
+		.nopadding {
+		   padding: 0 !important;
+		   margin: 0 !important;
+		}
+		
+	</style>
+	
+	<body>
+	
+		{% if show_feedback_modal %}
+			<span id="getRanchReportFeedback"  data-toggle="modal" data-target="#feedbackModal"></span>
+		{% endif %}
+		<span id="noEntities"  data-toggle="modal" data-target="#emptyModal"></span>
+	
+		<div class="modal fade" id="widgetModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="container">
+							<div class="row">
+								<div class="col">
+
+									<h2 class="text-black">Add and Delete Widgets</h2>
+									<p class="text-dark">Customize the widgets present on your dashboard with the checkboxes below</p>
+
+
+									<form action= "" class="js-validate p-1 p-md-9" novalidate="novalidate">
+
+										<div class="form-check">
+											<h3>Overview Tab:</h3>
+											<input class="form-check-input" type="checkbox" name="items" value="totalCurrentLossW" id="totalCurrentLossW">
+											<label class="form-check-label" for="flexCheckDefault">Total current loss</label>
+											<br><input class="form-check-input" type="checkbox" name="items" value="contributingActivitiesChartW" id="contributingActivitiesChartW">
+											<label class="form-check-label" for="flexCheckDefault">Losses associated with each event</label>
+											<br><input class="form-check-input" type="checkbox" name="items" value="lossOverTimeW" id="lossOverTimeW">
+											<label class="form-check-label" for="flexCheckDefault">Loss over time</label>	
+											<br><input class="form-check-input" type="checkbox" name="items" value="expectedCountW" id="expectedCountW">
+											<label class="form-check-label" for="flexCheckDefault">Expected crop count</label>
+											<br><input class="form-check-input" type="checkbox" name="items" value="actualCountW" id="actualCountW">
+											<label class="form-check-label" for="flexCheckDefault">Actual crop count</label>
+											<br><input class="form-check-input" type="checkbox" name="items" value="lossTrendW" id="lossTrendW">
+											<label class="form-check-label" for="flexCheckDefault">Loss trend</label>
+											<br><input class="form-check-input" type="checkbox" name="items" value="flyoverNotesW" id="flyoverNotesW">
+											<label class="form-check-label" for="flexCheckDefault">Flyover notes</label>					
+											<br><input class="form-check-input" type="checkbox" name="items" value="topFiveW" id="topFiveW">
+											<label class="form-check-label" for="flexCheckDefault">My 5 best and worst performing ranches</label>			
+											<br><input class="form-check-input" type="checkbox" name="items" value="contributingActivitiesW" id="contributingActivitiesW">
+											<label class="form-check-label" for="flexCheckDefault">Loss per date, separated by event</label>
+											
+											<h3>Events Tab:</h3>
+											<input class="form-check-input" type="checkbox" name="items" value="eventsPieChartW" id="eventsPieChartW">
+											<label class="form-check-label" for="flexCheckDefault">Event losses pie chart</label>
+											<br><input class="form-check-input" type="checkbox" name="items" value="eventsChartW" id="eventsChartW">
+											<label class="form-check-label" for="flexCheckDefault">Event losses chart</label>
+											<br><input class="form-check-input" type="checkbox" name="items" value="eventsOverTimeW" id="eventsOverTimeW">
+											<label class="form-check-label" for="flexCheckDefault">Loss by event over time</label>											
+											<h3>Health Tab:</h3>
+											<input class="form-check-input" type="checkbox" name="items" value="ndviAverageW" id="ndviAverageW">
+											<label class="form-check-label" for="flexCheckDefault">NDVI Total Average</label>
+											<br><input class="form-check-input" type="checkbox" name="items" value="ndviAverageByEventW" id="ndviAverageByEventW">
+											<label class="form-check-label" for="flexCheckDefault">NDVI Average by event</label>
+											<br><input class="form-check-input" type="checkbox" name="items" value="ndviAveragePerDateW" id="ndviAveragePerDateW">
+											<label class="form-check-label" for="flexCheckDefault">NDIV Average per date</label>							
+											<br><input class="form-check-input" type="checkbox" name="items" value="ndviChangeW" id="ndviChangeW">
+											<label class="form-check-label" for="flexCheckDefault">NDIV Change within time period</label>							
+											<br><input class="form-check-input" type="checkbox" name="items" value="ndviOverTimeW" id="ndviOverTimeW">
+											<label class="form-check-label" for="flexCheckDefault">NDIV Fluctuation over time</label>											
+											
+																	
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="sendWidgetChecksToBackend()">Apply and close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		
+		<div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-body">
+
+
+						<h2 class="text-black">How was your weekly ranch report?</h2>
+						<p class="text-dark">Since the last time you logged in, you received a weekly ranch report via email.  It included the information below.  Check or uncheck boxes as you like, and your next weekly ranch report will be customized to show only the information you'd like to see.</p>
+
+
+						<form action= "" class="js-validate p-1 p-md-9" novalidate="novalidate" method="post">
+
+							<div class="form-check">
+								<p class="text-grey">Next time, show me...</p>
+								<p class="text-grey">
+								<input class="form-check-input checked" type="checkbox" name="items" value="lossData" id="lossData">
+								<label class="form-check-label" for="flexCheckDefault">Data on past loss and current loss</label>
+								<br><input class="form-check-input checked" type="checkbox" name="items" value="lossTrend" id="lossTrend">
+								<label class="form-check-label" for="flexCheckDefault">Loss trend (positive or negative)</label>						
+								<br><input class="form-check-input" type="checkbox" name="items" value="topFive" id="topFive">
+								<label class="form-check-label" for="flexCheckDefault">My 5 best-performing ranches</label>
+								<br><input class="form-check-input" type="checkbox" name="items" value="bottomFive" id="bottomFive">
+								<label class="form-check-label" for="flexCheckDefault">My 5 worst-performing ranches</label>			
+								<br><input class="form-check-input" type="checkbox" name="items" value="healthData" id="healthData">
+								<label class="form-check-label" for="flexCheckDefault">Data on stress and health</label>
+								<br><input class="form-check-input" type="checkbox" name="items" value="contributingActivities" id="contributingActivities">
+								<label class="form-check-label" for="flexCheckDefault">Activities contributing to crop loss</label>														
+								</p>						
+							</div>
+
+							<br>
+							<div class="js-form-message mb-2">
+								<div class="js-focus-state input-group form form--no-brd">
+									<input class="form-control form__input" name="additional" placeholder="Anything else?" aria-label="Anything else?" data-msg="Please enter your location (city/state/country)." data-error-class="u-has-error" data-success-class="u-has-success">
+								</div>
+							</div>	
+							<br>
+							<input type="hidden" name="typeOfPost" value="updateWeeklyRanchReport">
+							<input type="hidden" name="tabShowing" value="Overview">
+							<div class="d-flex justify-content-end">
+								<button type="submit" name="updateWeeklyRanchReport" class="btn btn-primary btn-wide">Send</button>
+							</div>
+						</form>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>	
+		
+		
+		<div class="modal fade" id="emptyModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-body">
+
+
+						<h2 class="text-black">No flyover data</h2>
+						<p class="text-dark">There are no flyover dates in the date range you chose.  Please choose a different date range, and/or check the 'Show historical data, too' checkbox.</p>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>	
+
+	
+		<nav class="navbar navbar-default" style="background-color: #547634;color: #deab3d;">
+			<div class="container-fluid">
+    
+				<div class="navbar-header">
+					<div style="color: #deab3d;font-family: Verdana, Geneva, sans-serif;  font-size: 24px;">
+						AGXactly Operations
+					</div>
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarCollapse" aria-expanded="false">
+				</div>
+				
+				<div class="collapse navbar-collapse" id="navbarCollapse">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item active" id="Overview" name="Overview">
+						Overview
+						</li>
+						<li class="nav-item" id="EventsAnalysis" name="EventsAnalysis">
+						Events
+						</li>
+						<li class="nav-item" id="Health" name="Health">
+						Health
+						</li>
+						<li class="nav-item" id="Notifications" name="Notifications">
+						Notifications
+						</li>						
+						<li class="nav-item" name="Logout" onclick="location.href='{{ url_for('index') }}';">
+						Logout
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+		
+		<script>
+		$(".nav-item").click(function(){
+		
+			$(".nav-item").css('font-size', '18px');
+			$(".nav-item").css('color', '#B5B5B5');
+			
+			var ts = $(this).attr("name")
+			
+			$("div[name='" + ts + "']").css('font-size', '20px');
+			$("div[name='" + ts + "']").css('color', 'white');		
+			
+			if (ts == "Logout") { return; }
+			
+			<!-- $("div[name='Tab']").hide(); -->
+			<!-- $('.' + $(this).attr("name")).show(); -->
+			
+			<!-- $('#tabShowing').val(ts) -->
+			<!-- $('#compareTabShowing').val(ts) -->
+			
+			
+		}); 
+		</script>
+
+		
+		<script>
+		
+		var showing = "percent"
+		
+		if (showing == "percent")
+		{
+			$('#missingField').html({{percent_missing}} + "%")
+		}
+		
+		function togglePercent() 
+		{
+			if (showing == "percent")
+			{
+				$('#missingField').html(String({{crops_lost_for_simple_portal}}).replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " crops")
+				showing = "number"
+				var buttonText = "Show percent"
+				$('#currentLossButton').text(buttonText);
+			}
+			else 
+			{
+				$('#missingField').html({{percent_missing}} + "%")
+				showing = "percent"
+				var buttonText = "Show number"
+				$('#currentLossButton').text(buttonText);
+			}
+		}
+		</script>
+		
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-3">
+					<div id="accordion">
+						<div class="panel">
+							<button class="dashboard-button" data-toggle="collapse" data-target="#ranchFilter" aria-expanded="false" aria-controls="ranchFilter">
+							  Ranch/Sublot filter
+							</button>
+							<span class="badge badge-success">Currently showing: <b>{{start_date}} - {{end_date}}</b></span>
+							<span class="badge badge-success">{{currentOrAll}}</span>
+						</div>
+					</div>
+				</div>
+				<div id="ranchFilter" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+					<form action="" method="post">
+						<div class="col-md-3">
+							<div id="rbsString" style="display:none;">
+							</div>
+							<label for="exampleFormControlSelect1"><b>Choose a ranch</b></label>
+							<select class="form-control" id="RanchBlockSelector" name="rtv" size="3" onclick='AddSublots()'>
+							</select>
+						</div>
+						<div class="col-md-3">
+							<label for="exampleFormControlSelect1"><b>Choose sublots in that ranch</b></label>
+							<select multiple class="form-control" id="RanchBlockSublotSelector" name="rtv[]" size="3">
+								<option value="All" selected="selected">All</option>
+							</select>
+							<button type="button" class="dashboard-button" onclick='resetToAll()'>Reset selection to all ranches and sublots</button>
+						</div>
+						<div class="col-md-3">
+							<label for="exampleFormControlSelect1"><b>Input a date range</b></label>
+							<br>
+							<input class="TextInput" name="startDate" value="{{start_date}}"> <input class="EndDateInput" id="endDate" name="endDate" value="{{end_date}}"><input type='button' class='header-today-button' onclick="today('endDate')" value='Today'>
+							<input type="hidden" id="tabShowing" name="tabShowing" value="Overview">
+							<input type="hidden" name="typeOfPost" value="filter">
+							<br><input class="form-check-input" type="checkbox" name="historicalData" id="historicalData" value="historicalData"/>
+							<label class="form-check-label" for="flexSwitchCheckDefault">Show historical data, too</label>
+							<input type="submit" class="filter-button" id="filter" value="Filter using these values">		
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		
+		<script>
+			function today(element) 
+			{
+				var today = new Date();
+				var dd = String(today.getDate()).padStart(2, '0');
+				var mm = String(today.getMonth() + 1).padStart(2, '0'); 
+				var yyyy = today.getFullYear();
+
+				today = mm + '/' + dd + '/' + yyyy;
+				var endDateInputBox = document.getElementById(element);
+				endDateInputBox.value = today;
+			}
+		</script>
+	
+	
+	
+	
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+
+		<script>
+		function AddSublots() 
+		{
+			var rbs_string = document.getElementById("rbsString").innerHTML;
+			var split_rbs_string = rbs_string.split(",");
+			
+			var RanchBlockSublotsArray = []
+			
+			for (var r = 0; r < split_rbs_string.length; r++)
+			{
+				if (RanchBlockSublotsArray.includes(split_rbs_string[r])) { continue; } else
+				{
+					RanchBlockSublotsArray.push(split_rbs_string[r])
+				}
+			}
+			
+			$("#RanchBlockSublotSelector").empty();
+			
+			var chosenRanch = document.getElementById("RanchBlockSelector").value;	
+			for (var r = 0; r < RanchBlockSublotsArray.length; r++)
+			{
+				if (RanchBlockSublotsArray[r].indexOf(chosenRanch) > -1)
+				{
+					var o = new Option(RanchBlockSublotsArray[r], RanchBlockSublotsArray[r]);
+					$(o).html(RanchBlockSublotsArray[r]);
+	
+					$("#RanchBlockSublotSelector").append(o);
+				}
+			}
+			$('#RanchBlockSublotSelector option').prop('selected', true);
+		}
+		
+		function resetToAll()
+		{
+			$("#RanchBlockSelector option:selected").prop("selected", false);
+			$("#RanchBlockSublotSelector").empty();
+			
+			
+			
+			var c = new Option("All", "All");
+			$(c).html("All");
+			$("#RanchBlockSublotSelector").append(c);
+
+			$("#RanchBlockSublotSelector").val("All").change();
+			
+		}
+		</script>
+
+		<div class="Overview" name="Tab">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-12" style="font-size: 40px;">
+						Overview
+					</div>
+				</div>
+				<input type="button" onClick='sendToBackend()'>Send to backend</button>
+				<script>
+				function sendToBackend()
+				{
+					var canvas = $("#eventsPieChartPanel .canvasjs-chart-canvas").get(0);
+					var dataURL = canvas.toDataURL('image/jpeg');
+					
+					$.ajax({ 
+						url: "{{ url_for('chartsToImages') }}", 
+						type: 'POST', 
+						data: {
+							'client': "{{client}}",
+							'eventsPieChart': dataURL,
+						},
+					});	
+				
+				}
+				</script>
+				
+				<div class="row nopadding">
+					<div class="col-xs-4 nopadding">
+						<div class="panel" style="height: 250px; border-color: #808080; border-width: 5px; padding: 10px; " id="totalCurrentLossPanel">
+							<div class="card-header">
+								Total Current Loss
+							</div>
+							<div class="card-body">
+								<h2 id="missingField">{{percent_missing}}%</h2>
+								<button id="currentLossButton" type="button" class="dashboard-button" onclick="togglePercent()">Show number</button>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-6 nopadding">
+						<div class="panel" style="height: 250px; border-color: #808080; border-width: 5px; padding: 10px; overflow-y: scroll;" id="contributingActivitiesChartPanel">
+							<div class="card-header">
+								Losses By Event
+							</div>
+							<table class="cropsLostTable">
+								<thead>
+									<tr class="tableHeader">
+										<th class="sticky-header">Event</th>
+										<th class="sticky-header">%GT Crops lost</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="col-xs-2">
+						<div class="panel" style="height: 250px;">
+							<button id="addWidget" type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target="#widgetModal">
+								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+							</button>
+						</div>
+					</div>
+				</div>
+					
+				<div class="row nopadding">
+					<div class="col-xs-8 nopadding">
+						<div class="panel" style="height: 300px; width: 100%; border-color: #808080; border-width: 5px; padding: 10px; overflow-y: scroll;" id="lossOverTimePanel">
+						</div>
+						<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+					</div>
+					<div class="col-xs-4 nopadding">
+						<div class="panel-group nopadding">
+							<div class="panel" style="height: 150px; border-color: #808080; border-width: 5px; padding: 10px; overflow-y: scroll;" id="expectedCountPanel">
+								<div class="card-header">
+									Crops expected
+								</div>
+								<div class="card-body">
+									<h2>{{expected_crops}}</h2>
+								</div>
+							</div>
+							<div class="panel" style="height: 150px; border-color: #808080; border-width: 5px; padding: 10px; overflow-y: scroll;" id="actualCountPanel">
+								<div class="card-header">
+									Crops found
+								</div>
+								<div class="card-body">
+									<h2>
+										{{latest_crop_count}}
+									</h2>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="row nopadding">
+					<div class="col-xs-6 nopadding">
+						<div class="panel" style="height: 250px; border-color: #808080; border-width: 5px; padding: 10px; overflow-y: scroll;" id="lossTrendPanel"> 
+							<div class="card-header">
+								Trend
+							</div>
+							<div class="card-body">
+								<h2>
+									{{trending|safe}}
+								</h2>
+							</div>
+						</div>
+					</div>
+					{% if notes %}
+					<div class="col-xs-6 nopadding">
+						<div class="panel" style="height: 250px; border-color: #808080; border-width: 5px; padding: 10px; overflow-y: scroll;" id="flyoverNotesPanel">
+							<div class="card-header">
+								Notes
+							</div>
+							<div class="card-body">
+								{{notes|safe}}
+							</div>
+						</div>
+					</div>
+					{% endif %}
+				</div>
+				
+				<div class="row nopadding">
+					<div class="col-xs-6 nopadding">
+						<div class="panel" style="height: 300px; border-color: #808080; border-width: 5px; padding: 10px; overflow-y: scroll;" id="topFivePanel">
+							
+							<div class="card-title"><input type="button" class="dashboard-button" id="showTopFiveAsPercent" value="Show worst performing"><input type="button" class="dashboard-button" id="showBottomFiveAsPercent" value="Show best performing"></div>
+							<div id="barChartContainer-topFivesAsPercent" style="height: 200px; width: 100%;"></div>
+							<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+						</div>
+					</div>
+					<div class="col-xs-6 nopadding">
+						<div class="panel" style="height: 300px; border-color: #808080; border-width: 5px; padding: 10px; overflow-y: scroll;" id="topFiveTwoPanel">					
+							
+							<div class="card-title"><input type="button" class="dashboard-button" id="showTopFive" value="Show worst performing"><input type="button" class="dashboard-button" id="showBottomFive" value="Show best performing"></div>
+							<div id="barChartContainer-topFives" style="height: 200px; width: 100%;"></div>
+							<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+					
+						</div>
+					</div>
+				</div>
+				<div class="row nopadding">
+					<div class="col nopadding">
+						<div class="panel" style="height: 300px; width: 100%; border-color: #808080; border-width: 5px; padding: 10px; overflow-y: scroll;" id="contributingActivitiesPanel">							
+						</div>
+						<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		<div class="EventsAnalysis" name="Tab">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-12" style="font-size: 40px;">
+						Events
+					</div>
+				</div>
+				<div class="row nopadding">
+					<div class="col nopadding">
+						<div class="panel" style="height: 300px; border-color: #808080; border-width: 5px; padding: 10px; overflow-y: scroll;" id='eventsChartW'>
+							<div class="card-header">
+								Event Losses
+							</div>
+							<table class="EventLossesTable">
+								<thead>
+									<tr class="tableHeader">
+										<th class="sticky-header">Event</th>
+										<th class="sticky-header">Crops lost</th>
+										<th class="sticky-header">% Crops lost</th>
+										<th class="sticky-header">Target % loss</th>
+										<th class="sticky-header">Target vs. reality</th>
+									</tr>
+							  </thead>
+							  <tbody>
+							  </tbody>
+							</table>
+							<div id="targetAccordion">
+								<div class="panel">
+									<button class="dashboard-button" id="targetPercentsButton" data-toggle="collapse" data-target="#targetPercents" aria-expanded="false" aria-controls="targetPercents">
+									  Edit target percents
+									</button>
+								</div>
+							</div>
+							
+							<div id="targetPercents" class="collapse" aria-labelledby="headingTwo" data-parent="#targetAccordion">
+								<form action="" method="post">
+									<table class="TargetEventPercentsTable">
+										<thead>
+											<tr class="tableHeader">
+												<th class="sticky-header">Target percents for each event</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr class="trEven"><td style="text-align:left;"><input id="cultivationTarget" class="ComparisonDateInput" name="cultivationTarget" value="0.0"> percent target loss for cultivation.</td>
+											<tr class="trOdd"><td style="text-align:left;"><input id="roboweederTarget" class="ComparisonDateInput" name="roboweederTarget" value="0.0"> percent target loss for roboweeder.</td>
+											<tr class="trEven"><td style="text-align:left;"><input id="weedingTarget" class="ComparisonDateInput" name="weedingTarget" value="0.0"> percent target loss for weeding.</td>
+											<tr class="trOdd"><td style="text-align:left;"><input id="weatherTarget" class="ComparisonDateInput" name="weatherTarget" value="0.0"> percent target loss for weather.</td>
+											<tr class="trEven"><td style="text-align:left;"><input id="sidedressTarget" class="ComparisonDateInput" name="sidedressTarget" value="0.0"> percent target loss for sidedress.</td>
+											<tr class="trOdd"><td style="text-align:left;"><input id="plantingTarget" class="ComparisonDateInput" name="plantingTarget" value="0.0"> percent target loss for planting.</td>
+											<tr class="trEven"><td style="text-align:left;"><input id="diseaseTarget" class="ComparisonDateInput" name="diseaseTarget" value="0.0"> percent target loss for disease.</td>
+											<input type="hidden" id="eventTabShowingTwo" name="tabShowing" value="">
+											<input type="hidden" name="typeOfPost" value="setTargets">
+											<tr class="trOdd"><td><input type="submit" class="comparison-dashboard-button" id="setTargets" value="Set these targets"></td>
+										</tbody>
+									</table>
+								</form>	
+							</div>							
+						</div>
+					</div>
+				</div>
+				<div class="row nopadding">
+					<div class="col-xs-6 nopadding">
+						<div class="panel" id="eventsPieChartPanel" style="height: 300px; border-color: #808080; border-width: 5px; padding: 10px; overflow-y: scroll;" style="height: 370px; width: 100%;"></div>
+						<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+					</div>
+				
+					<div class="col-xs-6 nopadding">
+						<div class="panel" id='eventsOverTimePanel' style="height: 300px; border-color: #808080; border-width: 5px; padding: 10px; overflow-y: scroll;" style="height: 370px; width: 100%;"></div>
+						<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+					</div>
+				</div>
+				<!-- <div class="row row-cols-2"> -->
+					<!-- <div class="col-sm padding-0"> -->
+						<!-- <div class="AddEventBanner">Add a custom event:</div> -->
+							<!-- <form action="" method="post"> -->
+							<!-- <div class="form-group"> -->
+								<!-- <label for="eventName">Event name:</label> -->
+								<!-- <input class="form-control" name="fictitiousEventName" value="Other"> -->
+								<!-- <br> -->
+								<!-- <label for="lossToAssign">Percent loss to assign:</label> -->
+								<!-- <input class="form-control" name="fictitiousEventPercent" value="12.34"> -->
+							<!-- </div> -->
+							<!-- <input type="hidden" id="eventTabShowing" name="tabShowing" value=""> -->
+							<!-- <input type="hidden" name="typeOfPost" value="addEvent"> -->
+							<!-- <input type="submit" class="comparison-dashboard-button" id="add" value="Add this event"> -->
+						<!-- </form> -->
+					<!-- </div> -->
+					<!-- <div class="col-sm padding-0"> -->
+						<!-- <div class="card"> -->
+							<!-- <div class="comparison-data-title">Existing custom events:</div> -->
+							<!-- <div class="card-stack" id="savedCards"> -->
+								<!-- {{fictitious_events|safe}} -->
+							<!-- </div> -->
+						<!-- </div> -->
+					<!-- </div> -->
+				<!-- </div> -->
+			</div>
+		</div>
+					
+
+
+			
+
+		<div class="Health" name="Tab">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-12" style="font-size: 40px;">
+						Health
+					</div>
+				</div>
+				<div class="row nopadding">
+					<div class="col-xs-6 nopadding">
+						<div class="panel" id='ndviAverageW' style="height: 300px; border-color: #808080; border-width: 5px; padding: 10px; overflow-y: scroll;">
+							<div class="card-header">
+								NDVI Average
+							</div>
+							<div class="card-body">
+								<h2>
+								{{NDVIAverage}}
+								</h2>
+							</div>
+						
+								<!-- <div class="stat-card"> -->
+									<!-- <div class="stat-card-container"> -->
+										<!-- <div class="stat-title">Acres Flown</div> -->
+										<!-- <br> -->
+										<!-- <div class="stat-number">{{NDVIAcresFlown}}</div> -->
+									<!-- </div> -->
+								<!-- </div> -->
+							
+						</div>
+					</div>
+					<div class="col-xs-6 nopadding">
+						<div class="panel" id='ndviAverageByEventW' style="height: 300px; border-color: #808080; border-width: 5px; padding: 10px; overflow-y: scroll;">
+							<div class="card-header">
+								NDVI and events
+							</div>
+							<div class="card-body">
+								<div class="NDVISmallTable">
+									<table class="NDVIEventsAndAverageTable">
+										<thead>
+											<tr class="tableHeader">
+												<th class="sticky-header">Event</th>
+												<th class="sticky-header">Average NDVI</th>
+											</tr>
+										</thead>
+									  <tbody>
+									  </tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="row nopadding">
+					<div class="col">
+						<div class="panel" style="height: 300px; border-color: #808080; border-width: 5px; padding: 10px; overflow-y: scroll;">
+							<table class="NDVIOverallTable">
+							  <thead>
+								<tr class="tableHeader">
+									<th class="sticky-header">Date Flown</th>
+									<th class="sticky-header">Ranch / Block</th>
+									<th class="sticky-header">Sublot</th>
+									<th class="sticky-header">Event</th>
+									<th class="sticky-header">NDVI Score</th>
+									<th class="sticky-header">-</th>
+									<th class="sticky-header">Change</th>
+									<th class="sticky-header">% Change</th>
+								</tr>
+							  </thead>
+							  <tbody>
+							  </tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			
+				<div class="row nopadding">
+					<div class="col-xs-6 nopadding">
+						
+							<div class="panel" style="height: 300px; border-color: #808080; border-width: 5px; padding: 10px; overflow-y: scroll;" id='ndviAveragePerDatePanel'></div>
+							<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+						
+					</div>
+					<div class="col-xs-6 nopadding">	
+						
+							<div  class="panel"style="height: 300px; border-color: #808080; border-width: 5px; padding: 10px; overflow-y: scroll;" id='ndviChangePanel'></div>
+							<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+						
+					</div>
+				</div>
+				<div class="row nopadding">
+					<div class="col nopadding">
+						
+							<div class="panel" style="height: 300px; border-color: #808080; border-width: 5px; padding: 10px; overflow-y: scroll;" id='ndviOverTimePanel'></div>
+							<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+		
+		<div class="Notifications" name="Tab" style="">
+			<div class="container">
+		
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs" role="tablist">
+				  <li class="active">
+					  <a href="#home" role="tab" data-toggle="tab">
+						  Notifications
+					  </a>
+				  </li>
+				  <li><a href="#profile" role="tab" data-toggle="tab">
+						Alerts
+					  </a>
+				  </li>
+				</ul>
+				
+				<!-- Tab panes -->
+				<div class="tab-content">
+					<div class="tab-pane fade active in" id="home">
+						<h2>Notifications</h2>
+						<div class="row somepadding" style='background-color:#f0f0f0;padding:5px;'>
+							<div class="col-xs-4">
+								<label for="exampleFormControlSelect1"><b>Choose ranch...</b></label>
+								<select class="form-control" id="NotificationsRanchBlockSelector" name="rtv" size="3" onclick="AddSublotsToNotificationsBox()">
+								
+								</select>
+							</div>
+							<div class="col-xs-4">
+								<label for="exampleFormControlSelect1"><b>...and sublot</b></label>
+								<select multiple="multiple" class="form-control" id="NotificationsRanchBlockSublotSelector" name="rtv[]" size="3"><option value="All" selected="selected">All</option></select>
+								<button type="button" class="dashboard-button" onclick="notificationsResetToAll()">Reset</button>
+							</div>	
+							<div class="col-xs-4">
+								<label for="exampleFormControlSelect1"><b>Add to notification</b></label><br>
+								<button type="button" class="btn btn-default btn-lg" onclick="AddSublotsToNotification()">
+									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+								</button>
+							</div>
+						</div>
+						<div class="row somepadding" style='background-color:#ebebeb;padding:5px;'>
+							<div class="col">
+								<label for="notificationEmail"><b>Recipient email</b></label>
+								<input id="NotificationsEmailToAdd" class="ComparisonDateInput" name="NotificationsEmailToAdd" style="width:100%;"><input type="button" class="dashboard-button" onclick="AddEmailToNotification()" value="Add this email address">
+							</div>
+						</div>
+						<div class="row somepadding">
+							<div class="col">
+								<div class="NotificationsBuildingArea">
+									<div class="notification-card">
+										<div class="notification-card-container" style='background-color:#e0e0e0;padding:5px;'>
+											<div style="font-weight:bold;color:#2E4053;">Recipients:</div>
+											<div class="notification-title" id="NotificationsChosenEmails" name="email"></div>
+											<div style="font-weight:bold;color:#2E4053;">Ranches:</div>
+											<div class="notification-text" id="NotificationsChosenSublots" name="ranches"></div> 
+											<input type="button" class="dashboard-button" onclick="createNotification()" value="Create this notification">
+											<input type="button" class="dashboard-button" onclick="clearNotification()" value="CLEAR">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row somepadding">
+							<div class="col">
+								<div class="panel">
+								<script>
+								function deleteNotification(r, e) 
+								{
+									$.ajax({ 
+										url: "/deleteNotification", 
+										type: 'POST', 
+										data: {
+											'ranches': r,
+											'email': e,
+											'client': "{{client}}",
+										},
+										success: function(response){ 
+											$('.ExistingNotificationsStack').html(response);
+										}
+									}); 	
+								}
+								</script>
+									<div class="ExistingNotificationsStack">
+										<div class="notification-data-title" style="font-size:18px">Existing notifications:</div>
+										<div class="card-stack" id="savedCards">
+											{{existingNotifications|safe}}
+										</div>										
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="profile">
+						<h2>Alerts</h2>
+						<div class="row somepadding" style='background-color:#f0f0f0;padding:5px;'>
+							<div class="col-xs-4">
+								<label for="exampleFormControlSelect1"><b>Choose ranch...</b></label>
+								<select class="form-control" id="AlertsRanchBlockSelector" name="rtv" size="3" onclick="AddSublotsToAlertsBox()">
+								</select>
+							</div>
+							<div class="col-xs-4">
+								<label for="exampleFormControlSelect1"><b>...and sublot</b></label>
+								<select multiple="multiple" class="form-control" id="AlertsRanchBlockSublotSelector" name="rtv[]" size="3"><option value="All" selected="selected">All</option></select>
+								<button type="button" class="dashboard-button" onclick="alertsResetToAll()">Reset</button>
+							</div>	
+							<div class="col-xs-4">
+								<label for="exampleFormControlSelect1"><b>Add to alert</b></label><br>
+								<button type="button" class="btn btn-default btn-lg" onclick="AddSublotsToAlert()">
+									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+								</button>
+							</div>
+						</div>
+						<div class="row somepadding" style='background-color:#ebebeb;padding:5px;'>
+							<div class="col">
+								<label for="exampleFormControlSelect1"><b>Build a condition:</b></label>
+								<br>
+								<select id="Thing" name="Thing" class="alerts-dropdown" style="width:250px;">
+									<option value="Crop loss on most current flight" selected="selected">Crop loss on most current flight</option>
+									<option value="Crop loss to date">Crop loss to date</option>
+									<option value="NDVI change since last flight">NDVI change since last flight</option>
+									<option value="Crop loss due to Cultivation">Crop loss due to Cultivation</option>
+									<option value="Crop loss due to Roboweeder">Crop loss due to Roboweeder</option>
+									<option value="Crop loss due to Weeding">Crop loss due to Weeding</option>
+									<option value="Crop loss due to Weather">Crop loss due to Weather</option>
+									<option value="Crop loss due to Sidedress">Crop loss due to Sidedress</option>
+									<option value="Crop loss due to Planting">Crop loss due to Planting</option>
+									<option value="Crop loss due to Disease">Crop loss due to Disease</option>
+								</select>
+								<label> is </label>
+								<select id="Condition" name="Condition" class="alerts-dropdown" style="width:150px;">
+									<option value="greater than" selected="selected">greater than</option>
+									<option value="less than">less than</option>
+								</select>
+								<input id="Value" class="ComparisonDateInput" name="Value" value="3" style="width:30px;"><label> percent.</label>
+								<br>
+								<input type="button" class="comparison-dashboard-button" onclick="addCondition()" value="Add this condition">
+							</div>
+						</div>
+						<div class="row somepadding" style='background-color:#e0e0e0;padding:5px;'> 
+							<div class="col">
+								<label for="alertEmail"><b>Recipient email</b></label>
+								<input id="AlertsEmailToAdd" class="ComparisonDateInput" name="AlertsEmailToAdd" style="width:100%;"><input type="button" class="dashboard-button" onclick="AddEmailToAlert()" value="Add this email address">
+							</div>
+						</div>
+						<div class="row somepadding">
+							<div class="col">
+								<div class="AlertsBuildingArea">
+									<div class="alert-card">
+										<div class="alert-card-container" style='background-color:#cccccc;padding:5px;'>
+											<div style="font-weight:bold;color:#2E4053;">Recipients:</div>
+											<div class="alert-title" id="AlertsChosenEmails" name="email"></div>
+											<div style="font-weight:bold;color:#2E4053;">Ranches:</div>
+											<div class="alert-text" id="AlertsChosenSublots" name="ranches"></div>
+											<div style="font-weight:bold;color:#2E4053;">Condition(s):</div>
+											<div class="alert-text" id="AlertsConditions" name="conditions"></div>
+											<input type="button" class="dashboard-button" onclick="createAlert()" value="Create this alert">
+											<input type="button" class="dashboard-button" onclick="clearAlert()" value="CLEAR">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row somepadding">
+							<div class="col">
+								<div class="panel">
+								<script>
+								function deleteAlert(r, e) 
+								{
+									$.ajax({ 
+										url: "/deleteAlert", 
+										type: 'POST', 
+										data: {
+											'ranches': r,
+											'email': e,
+											'client': "{{client}}"
+										},
+										success: function(response){ 
+											$('.ExistingAlertsStack').html(response);
+										}
+									}); 	
+								}
+								</script>
+									<div class="ExistingAlertsStack">
+										<div class="alert-data-title" style="font-size:18px">Existing alerts:</div>
+										<div class="card-stack" id="savedCards">
+											{{existingAlerts|safe}}
+										</div>	
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+		function AddSublotsToNotificationsBox() 
+		{
+			var rbs_string = document.getElementById("rbsString").innerHTML;
+			var split_rbs_string = rbs_string.split(",");
+			
+			var RanchBlockSublotsArray = []
+			
+			for (var r = 0; r < split_rbs_string.length; r++)
+			{
+				if (RanchBlockSublotsArray.includes(split_rbs_string[r])) { continue; } else
+				{
+					RanchBlockSublotsArray.push(split_rbs_string[r])
+				}
+			}
+			
+			$("#NotificationsRanchBlockSublotSelector").empty();
+			
+			var chosenRanch = document.getElementById("NotificationsRanchBlockSelector").value;	
+			for (var r = 0; r < RanchBlockSublotsArray.length; r++)
+			{
+				if (RanchBlockSublotsArray[r].indexOf(chosenRanch) > -1)
+				{
+					var o = new Option(RanchBlockSublotsArray[r], RanchBlockSublotsArray[r]);
+					$(o).html(RanchBlockSublotsArray[r]);
+
+					$("#NotificationsRanchBlockSublotSelector").append(o);
+				}
+			}
+			$('#NotificationsRanchBlockSublotSelector option').prop('selected', true);
+		}
+		function AddSublotsToNotification()
+		{
+			var options = $('#NotificationsRanchBlockSublotSelector option:selected');
+
+			var values = $.map(options ,function(option) {
+				return option.value;
+			});
+			
+			for (var v = 0; v < values.length; v++)
+			{
+				document.getElementById("NotificationsChosenSublots").innerHTML = values[v] + " - " + document.getElementById("NotificationsChosenSublots").innerHTML
+			}
+		}
+		function AddEmailToNotification()
+		{
+			document.getElementById("NotificationsChosenEmails").innerHTML = document.getElementById("NotificationsEmailToAdd").value + " - " + document.getElementById("NotificationsChosenEmails").innerHTML
+			document.getElementById("NotificationsEmailToAdd").value = "";
+		}
+		function createNotification() 
+		{
+			email = document.getElementById("NotificationsChosenEmails").innerHTML.replace(/(\r\n|\n|\r)/gm,""); 
+			ranches = document.getElementById("NotificationsChosenSublots").innerHTML.replace(/(\r\n|\n|\r)/gm,"");
+			
+			if (email.length < 1 || ranches.length < 1)
+			{
+				alert("Either the email recipient or ranches information has been left blank. Please fill in all information before creating a notification.");
+				return null
+			}
+
+			$.ajax({ 
+				url: "/createNotification", 
+				type: 'POST', 
+				data: {
+					'client': "{{client}}",
+					'email': email,
+					'ranches': ranches,
+				},
+				success: function(response){ 
+					$('.ExistingNotificationsStack').html(response);
+					$('.NotificationsBuildingArea').html("<div class='notification-card'><div class='notification-card-container'><div style='font-weight:bold;color:#2E4053;'>Recipients:</div><div class='notification-title' id='NotificationsChosenEmails' name='email'></div><div style='font-weight:bold;color:#2E4053;'>Ranches:</div><div class='notification-text' id='NotificationsChosenSublots' name='ranches'></div><input type='button' class='dashboard-button' onclick='createNotification()' value='Create this notification'><input type='button' class='dashboard-button' onclick='clearNotification()' value='CLEAR'></div></div>");
+				}
+			}); 	
+		}
+		function clearNotification()
+		{
+			document.getElementById("NotificationsChosenEmails").innerHTML = "";
+			ranches = document.getElementById("NotificationsChosenSublots").innerHTML = "";
+		}
+		
+		function notificationsResetToAll()
+		{
+			$("#NotificationsRanchBlockSelector option:selected").prop("selected", false);
+			$("#NotificationsRanchBlockSublotSelector").empty();
+			
+			
+			
+			var c = new Option("All", "All");
+			$(c).html("All");
+			$("#NotificationsRanchBlockSublotSelector").append(c);
+
+			$("#NotificationsRanchBlockSublotSelector").val("All").change();
+			
+		}
+		</script>
+
+		
+		
+		
+		
+
+		<script>
+		function AddSublotsToAlertsBox() 
+		{
+			var rbs_string = document.getElementById("rbsString").innerHTML;
+			var split_rbs_string = rbs_string.split(",");
+			
+			var RanchBlockSublotsArray = []
+			
+			for (var r = 0; r < split_rbs_string.length; r++)
+			{
+				if (RanchBlockSublotsArray.includes(split_rbs_string[r])) { continue; } else
+				{
+					RanchBlockSublotsArray.push(split_rbs_string[r])
+				}
+			}
+			
+			$("#AlertsRanchBlockSublotSelector").empty();
+			
+			var chosenRanch = document.getElementById("AlertsRanchBlockSelector").value;	
+			for (var r = 0; r < RanchBlockSublotsArray.length; r++)
+			{
+				if (RanchBlockSublotsArray[r].indexOf(chosenRanch) > -1)
+				{
+					var o = new Option(RanchBlockSublotsArray[r], RanchBlockSublotsArray[r]);
+					$(o).html(RanchBlockSublotsArray[r]);
+
+					$("#AlertsRanchBlockSublotSelector").append(o);
+				}
+			}
+			$('#AlertsRanchBlockSublotSelector option').prop('selected', true);
+		}
+		function AddSublotsToAlert()
+		{
+			var options = $('#AlertsRanchBlockSublotSelector option:selected');
+
+			var values = $.map(options ,function(option) {
+				return option.value;
+			});
+			
+			for (var v = 0; v < values.length; v++)
+			{
+				document.getElementById("AlertsChosenSublots").innerHTML = values[v] + " - " + document.getElementById("AlertsChosenSublots").innerHTML
+			}
+		}
+		function AddEmailToAlert()
+		{
+			document.getElementById("AlertsChosenEmails").innerHTML = document.getElementById("AlertsEmailToAdd").value + " - " + document.getElementById("AlertsChosenEmails").innerHTML
+			document.getElementById("AlertsEmailToAdd").value = "";
+		}
+		function addCondition()
+		{
+			var conditionString = document.getElementById("Thing").value + " is " + document.getElementById("Condition").value + " " + document.getElementById("Value").value + " percent."
+			
+			document.getElementById("AlertsConditions").innerHTML = conditionString + " - " + document.getElementById("AlertsConditions").innerHTML				
+		}
+		function createAlert() 
+		{
+			email = document.getElementById("AlertsChosenEmails").innerHTML.replace(/(\r\n|\n|\r)/gm,""); 
+			ranches = document.getElementById("AlertsChosenSublots").innerHTML.replace(/(\r\n|\n|\r)/gm,"");
+			conditions = document.getElementById("AlertsConditions").innerHTML.replace(/(\r\n|\n|\r)/gm,"");
+			
+			if (email.length < 1 || ranches.length < 1 || conditions.length < 1)
+			{
+				alert("Either the email recipient, ranches, or conditions information has been left blank. Please fill in all information before creating an alert.");
+				return null
+			}
+
+			$.ajax({ 
+				url: "/createAlert", 
+				type: 'POST', 
+				data: {
+					'client': "{{client}}",
+					'email': email,
+					'ranches': ranches,
+					'conditions': conditions
+				},
+				success: function(response){ 
+					$('.ExistingAlertsStack').html(response);
+					$('.AlertsBuildingArea').html("<div class='alert-card'><div class='alert-card-container'><div style='font-weight:bold;color:#2E4053;'>Recipients:</div><div class='alert-title' id='AlertsChosenEmails' name='email'></div><div style='font-weight:bold;color:#2E4053;'>Ranches:</div><div class='alert-text' id='AlertsChosenSublots' name='ranches'></div><div style='font-weight:bold;color:#2E4053;'>Condition(s):</div><div class='alert-text' id='AlertsConditions' name='conditions'></div><input type='button' class='dashboard-button' onclick='createAlert()' value='Create this alert'><input type='button' class='dashboard-button' onclick='clearAlert()' value='CLEAR'></div></div>");
+				}
+			}); 	
+		}
+		function clearAlert()
+		{
+			document.getElementById("AlertsChosenEmails").innerHTML = "";
+			document.getElementById("AlertsChosenSublots").innerHTML = "";
+			document.getElementById("AlertsConditions").innerHTML = "";			
+		}
+		
+		function alertsResetToAll()
+		{
+			$("#AlertsRanchBlockSelector option:selected").prop("selected", false);
+			$("#AlertsRanchBlockSublotSelector").empty();
+			
+			
+			
+			var c = new Option("All", "All");
+			$(c).html("All");
+			$("#AlertsRanchBlockSublotSelector").append(c);
+
+			$("#AlertsRanchBlockSublotSelector").val("All").change();
+			
+		}
+		</script>
+
+								
+								
+								
+						
+			
+		<script>
+			var CropsLostChartArray = [];
+				
+			{% for d in percent_missing_table %}
+				CropsLostChartArray.push("{{d}}")
+			{% endfor %}
+
+			count = 1
+			for (var i = 0; i < CropsLostChartArray.length; i = i+2) 
+			{
+				if (count%2 == 0) {
+					$('.cropsLostTable').append('<tr class="trEven"><td>' + CropsLostChartArray[i] + '</td><td style="width:100%">' + CropsLostChartArray[i+1] + '%</td ></tr>');
+				} else {
+					$('.cropsLostTable').append('<tr class="trOdd"><td>' + CropsLostChartArray[i] + '</td><td style="width:100%">' + CropsLostChartArray[i+1] + '%</td></tr>');
+				}
+				count += 1
+			}
+		</script>
+			
+		<script>
+		$("#Overview").click(function(){
+		
+			$("div[name='Tab']").hide();
+			$('.Overview').show();
+			
+			$('#tabShowing').val('Overview');
+			
+			var overviewPanels = ['lossOverTimePanel', 'topFivePanel', 'contributingActivitiesPanel']
+			
+			for (var p = 0; p < overviewPanels.length; p++)
+			{
+				drawChart(overviewPanels[p]);
+			}
+		});
+		
+		$("#EventsAnalysis").click(function(){
+		
+			var canvas = $("#eventsPieChartPanel .canvasjs-chart-canvas").get(0);
+			var dataURL = canvas.toDataURL('image/jpeg');
+			
+			$.ajax({ 
+				url: "{{ url_for('chartsToImages') }}", 
+				type: 'POST', 
+				data: {
+					'client': "{{client}}",
+					'eventsPieChart': dataURL,
+				},
+			});	
+		
+			$("div[name='Tab']").hide();
+			$('.EventsAnalysis').show();
+			
+			$('#tabShowing').val('EventsAnalysis');
+		
+			var eventPanels = ['eventsPieChartPanel', 'eventsOverTimePanel']
+			
+			
+			for (var p = 0; p < eventPanels.length; p++)
+			{
+				drawChart(eventPanels[p]);
+			}
+		});
+		
+		$("#Health").click(function(){
+		
+			$("div[name='Tab']").hide();
+			$('.Health').show();
+			
+			$('#tabShowing').val('Health');
+		
+			var healthPanels = ['ndviAveragePerDatePanel', 'ndviChangePanel', 'ndviOverTimePanel']
+			
+			for (var p = 0; p < healthPanels.length; p++)
+			{
+				drawChart(healthPanels[p]);
+			}
+		});
+		
+		$("#Notifications").click(function(){
+		
+			$("div[name='Tab']").hide();
+			$('.Notifications').show();
+			
+			$('#tabShowing').val('Notifications');
+		
+		});
+		</script>
+		
+		
+		<script>
+		function drawChart (whichPanel) {
+		
+			function compareDataPointX(dataPoint1, dataPoint2) {
+			  return dataPoint1.x - dataPoint2.x;
+			}
+			
+			function compareDataPointY(dataPoint1, dataPoint2) {
+			  return dataPoint2.y - dataPoint1.y;
+			}
+			
+			function toggleDataSeries(e) {
+				if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+					e.dataSeries.visible = false;
+				} else {
+					e.dataSeries.visible = true;
+				}
+				e.chart.render();
+			}
+
+			if (whichPanel == "contributingActivitiesPanel")
+			{
+				var lineChart = new CanvasJS.Chart("contributingActivitiesPanel", {
+					animationEnabled: true,
+					zoomEnabled: true,
+					panEnabled: true,
+					title:{
+						text: "Crops Lost Per Date Flown and Events",
+						fontFamily: "Verdana, Geneva",
+						fontSize: 10
+						},
+					legend: {
+						cursor: "pointer",
+						itemclick: toggleDataSeries,
+						horizontalAlign: "center", 
+						verticalAlign: "top", 
+						fontSize: 15
+					},
+					data: [{{crops_lost_per_date_flown|safe}}]
+				});
+				lineChart.render();
+			}
+			else if (whichPanel == 'topFivePanel')
+			{				
+				var barChart = new CanvasJS.Chart("barChartContainer-topFives", {
+				animationEnabled: true,
+				zoomEnabled: true,
+				panEnabled: true,
+				title: {
+						text: "Bottom 5 performing ranches: Crops Lost",
+						fontFamily: "Verdana, Geneva",
+						fontSize: 10
+					},
+					data: [{
+						type: "column",
+						indexLabel: "{y}",
+						showInLegend: false,
+						dataPoints: [{{top_five_ranch_crops_lost|safe}}]
+					}]
+				});
+				barChart.options.data[0].dataPoints.sort(compareDataPointY);
+				barChart.render();
+				
+				var barChart2 = new CanvasJS.Chart("barChartContainer-topFivesAsPercent", {
+				animationEnabled: true,
+				zoomEnabled: true,
+				panEnabled: true,
+				title: {
+						text: "Bottom 5 performing ranches: % Lost",
+						fontFamily: "Verdana, Geneva",
+						fontSize: 10
+					},
+					data: [{
+						type: "column",
+						indexLabel: "{y}",
+						showInLegend: false,
+						dataPoints: [{{top_five_ranch_crops_lost_as_percent|safe}}]
+					}]
+				});
+				barChart2.options.data[0].dataPoints.sort(compareDataPointY);
+				barChart2.render();
+			}
+			else if (whichPanel == 'lossOverTimePanel')
+			{
+				var rateOfLossChart = new CanvasJS.Chart("lossOverTimePanel", {
+					animationEnabled: true,
+					zoomEnabled: true,
+					panEnabled: true,
+					title: {
+						text: "Rate of loss",
+						fontFamily: "Verdana, Geneva",
+						fontSize: 10
+					},
+					axisX: {
+						title: "Flyover number",
+						minimum: 0,
+						interval: 10
+					},
+					axisY2: {
+						<!-- title: "Percent of crops present (cumulative)", -->
+						suffix: "%",
+						maximum: 100
+					},
+					toolTip: {
+						shared: false,
+						content: "{name}: {y}" 
+					},
+					legend: {
+						cursor: "pointer",
+						verticalAlign: "top",
+						horizontalAlign: "center",
+						itemclick: toggleDataSeries
+					},
+					data: [{{rateOfLossChart|safe}}]
+				});
+				rateOfLossChart.render();
+			} 
+			else if (whichPanel == "eventsOverTimePanel")
+			{
+			
+				var event_rateOfLossChart = new CanvasJS.Chart("eventsOverTimePanel", {
+					animationEnabled: true,
+					zoomEnabled: true,
+					panEnabled: true,
+					title: {
+						text: "Are losses associated with events getting better or worse?",
+						fontFamily: "Verdana, Geneva",
+						fontSize: 10
+					},
+					axisX: {
+						title: "Flyover number",
+						minimum: 0,
+						interval: 10
+					},
+					axisY2: {
+						title: "Cumulative percent loss",
+						suffix: "%"
+					},
+					toolTip: {
+						shared: false,
+						content: "{name}: {y}" 
+					},
+					legend: {
+						cursor: "pointer",
+						verticalAlign: "top",
+						horizontalAlign: "center",
+						itemclick: toggleDataSeries
+					},
+					data: [{{event_rateOfLossChart|safe}}]
+				});
+				event_rateOfLossChart.render();
+			}
+			else if (whichPanel == 'eventsPieChartPanel')
+			{
+				var eventsAnalysisPieChart = new CanvasJS.Chart("eventsPieChartPanel", {
+				animationEnabled: true,
+				title: {
+					text: "Crop loss broken down by event",
+						fontFamily: "Verdana, Geneva",
+						fontSize: 10
+					},
+				  legend: {
+					   horizontalAlign: "center", 
+					   verticalAlign: "bottom", 
+					   fontSize: 15
+					 },
+					data: [{
+						type: "pie",
+						showInLegend: true,
+						startAngle: 240,
+						indexLabel: "{label} {y}",
+						dataPoints: [{{eventAnalysisPieChart|safe}}]
+					}]
+				});
+				eventsAnalysisPieChart.render();
+							
+			}
+			else if (whichPanel == "ndviOverTimePanel")
+			{	
+				var stressOverTimeChart = new CanvasJS.Chart("ndviOverTimePanel", {
+					animationEnabled: true,
+					zoomEnabled: true,
+					panEnabled: true,
+					title: {
+						text: "Stress scores over time (by ranch)",
+						fontFamily: "Verdana, Geneva",
+						fontSize: 10
+					},
+					axisX: {
+						title: "Flyover number",
+						minimum: 0,
+						interval: 10
+					},
+					axisY2: {
+						title: "NDVI score"
+					},
+					toolTip: {
+						shared: false,
+						content: "{name}: {y}" 
+					},
+					legend: {
+						cursor: "pointer",
+						verticalAlign: "top",
+						horizontalAlign: "center",
+						itemclick: toggleDataSeries
+					},
+					data: [{{stressOverTimeChart|safe}}]
+				});
+				stressOverTimeChart.render();
+			}
+			else if (whichPanel == 'ndviAveragePerDatePanel')
+			{
+				var ndviLineChart = new CanvasJS.Chart("ndviAveragePerDatePanel", {
+					animationEnabled: true,
+					zoomEnabled: true,
+					panEnabled: true,
+					title:{
+						text: "Average Score Per Date",
+						fontFamily: "Verdana, Geneva",
+						fontSize: 10
+					},
+					data: [{{AverageNDVIScorePerDate|safe}}]
+				});
+				ndviLineChart.options.data[0].dataPoints.sort(compareDataPointX);
+				ndviLineChart.render();
+			}
+			else if (whichPanel == 'ndviChangePanel')
+			{				
+				var barChart3 = new CanvasJS.Chart("ndviChangePanel", {
+				animationEnabled: true,
+				zoomEnabled: true,
+				panEnabled: true,
+				title: {
+						text: "Total NDVI Change since measurement began",
+						fontFamily: "Verdana, Geneva",
+						fontSize: 10
+					},
+					data: [{
+						type: "column",
+						indexLabel: "{y}",
+						showInLegend: false,
+						dataPoints: [{{NDVIChanges|safe}}]
+					}]
+				});
+				barChart3.options.data[0].dataPoints.sort(compareDataPointY);
+				barChart3.render();	
+			}
+		}
+		</script>
+		
+	</body>
+</html>

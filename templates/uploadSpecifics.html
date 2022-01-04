@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Agxactly web portal">
+    <meta name="keywords" content="translation">
+    <meta name="generator" content="Responsive Site Designer 1.5.1419">
+    <title>AGXactly Web Portal</title>
+	<script src="{{url_for('static', filename='js/bootstrap.js')}}"></script>
+	<link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/LoginStyle1022.css')}}">
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js" integrity="sha256-spTpc4lvj4dOkKjrGokIrHkJgNA0xMS98Pw9N7ir9oI=" crossorigin="anonymous"></script>
+	<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+	
+		{% for r in nonUploadedIncompleteArray %}
+			$("#NonUploadedIncomplete").append("{{r}}<br>")
+		{% endfor %}
+		
+		{% for r in nonUploadedFormattingArray %}
+			$("#NonUploadedFormatting").append("{{r}}<br>")
+		{% endfor %}
+		
+		})
+	</script>
+</head>
+
+<body>
+<div class="grid-container">
+	<div class="TitleBar">
+		Data upload report
+	</div>
+	<div class="card-group">
+		<div class="card">
+			<div class="AGXactlyLogo">
+				Thank you for uploading new data into the database!  Here are the details of the upload.
+				<br>
+				<br><b>Successfully uploaded:</b> {{uploadedCount}} flyover dates
+				<br><b>Not uploaded due to being incomplete:</b> {{nonUploadedIncomplete}} flyover dates
+				<br><b>Not uploaded due to formatting abnormalities:</b> {{nonUploadedFormatting}} flyover dates
+			</div>
+		</div>
+		<div class="card">
+			<br><b>Details of incomplete flyover dates:</b>
+			<div id="NonUploadedIncomplete"></div>
+		</div>
+		<div class="card">
+			<br><b>Details of flyover dates with formatting abnormalities:</b>
+			<div id="NonUploadedFormatting"></div>
+		</div>
+	</div>
+</div>
+</body>
+
+</html>
+
+
+

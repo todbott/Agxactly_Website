@@ -1,0 +1,14 @@
+Flask==1.0.2
+flask_login
+gunicorn==19.9.0
+Werkzeug==0.16.0
+requests_toolbelt
+passlib
+lxml
+gspread
+google-oauth
+google-cloud-datastore<2.0.0dev
+google-cloud-ndb
+google-cloud-tasks==2.0.0
+google-api-python-client
+mailjet_rest

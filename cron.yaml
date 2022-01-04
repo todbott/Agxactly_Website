@@ -1,0 +1,11 @@
+cron:
+- description: "Bring data from the Braga google sheet into the database"
+  url: /createData/Braga
+  schedule: every 24 hours
+- description: "Send weekly notifications to all recipients"
+  url: /sendEmail
+  schedule: every friday 17:00
+  timezone: America/Toronto
+- description: "Check if any conditions have been met for the alerts emails, and send if necessary"
+  url: /checkConditionsAndSendAlert
+  schedule: every 12 hours

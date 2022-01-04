@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Agxactly web portal">
+  <meta name="keywords" content="translation">
+  <meta name="generator" content="Responsive Site Designer 1.5.1419">
+  <title>AGXactly Admin Login Portal</title>
+  <link rel="stylesheet" href="{{url_for('static', filename='css/LoginStyle1022.css')}}">
+</head>
+
+<body>
+<div class="grid-container">
+	<div class="TitleBar">
+		AGXACTLY ADMIN SIDE
+	</div>
+	<div class="UsernameAndPassword">
+        <form action="" method="post">
+			<input type="text" class="LoginTextInput" placeholder="Username" name="username">
+			<br>
+			<input type="password" class="LoginTextInput" placeholder="current-password" name="password">
+			<br>
+			<input class="btn btn-default" type="submit" value="Login">
+        </form>
+        {% if error %}
+			<p class="error"><strong>Error:</strong> {{ error }}
+        {% endif %}
+	</div>
+</div>
+</body>
+
+</html>
+
+
+

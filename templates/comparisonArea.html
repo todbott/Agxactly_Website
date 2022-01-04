@@ -1,0 +1,271 @@
+
+	<script>
+	$(document).ready(function() {
+	
+	
+	{% for r in cropsForComparison %}
+		var c = new Option("{{r}}", "{{r}}");
+		$(c).html("{{r}}");
+		$("#ComparisonCropSelector").append(c);
+	{% endfor %}
+	
+	{% for r in activitiesForComparison %}
+		var a = new Option("{{r}}", "{{r}}");
+		$(a).html("{{r}}");
+		$("#ComparisonActivitySelector").append(a);
+	{% endfor %}
+	
+	$("#RanchBlockSublotSelector").val("All").change();
+	$("#ComparisonCropSelector").val("Broccoli").change();
+	$("#ComparisonPlantingMethodSelector").val("Transplant").change();
+	$("#ComparisonActivitySelector").val("Cultivation").change();
+	
+	$('.analyzing').hide();
+	
+	function compareDataPointX(dataPoint1, dataPoint2) {
+	  return dataPoint1.x - dataPoint2.x;
+	}
+	
+	var comparisonBarChart = new CanvasJS.Chart("ComparisonBarChartContainer", {
+	animationEnabled: true,
+    zoomEnabled: false,
+    panEnabled: false,
+	title: {
+			text: "Average of losses (as percent of expected crops) before and after change",
+			fontFamily: "Verdana, Geneva",
+			fontSize: 20
+		},
+		data: [{
+			type: "column",
+			indexLabel: "{y}",
+			showInLegend: false,
+			dataPoints: [{{comparisonBarChart|safe}}]
+		}]
+	});
+	comparisonBarChart.render();
+	
+	var comparisonLineChart = new CanvasJS.Chart("ComparisonLineChartContainer", {
+		animationEnabled: true,
+		zoomEnabled: true,
+        panEnabled: true,
+		title:{
+			text: "Crop losses per date due to {{comparisonActivity|safe}} as percent of expected crops (the orange line indicates the date the method was changed)",
+			fontFamily: "Verdana, Geneva",
+			fontSize: 20
+		},
+		axisX:{
+			stripLines:[
+			{                
+				startValue:{{CdForAxisMarkerOne}},
+				endValue:{{CdForAxisMarkerTwo}},                
+				color:"#E99F00"                      
+			}
+			]
+		},
+		data: [{{comparisonLineChart|safe}}]
+	});
+	comparisonLineChart.options.data[0].dataPoints.sort(compareDataPointX);
+	comparisonLineChart.render();
+	});
+	</script>
+	
+	<div class="card-deck">
+		<div class="card">
+			<div class="card-header">
+				Crop details:
+			</div>
+			<div class="card-body">
+				<div class="ComparisonCropArea">
+					<div class="comparison-data-title">Crop of interest:</div>
+					<select id="ComparisonCropSelector" name="comparisonCrop[]" multiple="multiple" size="3" class="comparison-dashboard-dropdown">
+					</select>
+				</div>
+				<div class="ComparisonPlantingMethodArea">
+					<div class="comparison-data-title">Planting method:</div>
+					<select id="ComparisonPlantingMethodSelector" name="comparisonPlantingMethod[]" multiple="multiple" size="3" class="comparison-dashboard-dropdown">
+					<option value="Direct seed">Direct seed</option>
+					<option value="Transplant">Transplant</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-header">
+				Date and activity:
+			</div>
+			<div class="card-body">
+				<div class="ComparisonDateRangeArea">
+					<div class="comparison-data-title">Date range to analyze:</div>
+					<input id="comparisonStartDate" class="ComparisonDateInput" name="comparisonStartDate" value="{{comparisonStartDate}}"> <input id="comparisonEndDate" class="ComparisonEndDateInput" name="comparisonEndDate" value="{{comparisonEndDate}}"><input type='button' class='comparison-today-button' onclick="today('comparisonEndDate')" value='Today'>
+					<script>
+					function today(element) 
+					{
+						var today = new Date();
+						var dd = String(today.getDate()).padStart(2, '0');
+						var mm = String(today.getMonth() + 1).padStart(2, '0'); 
+						var yyyy = today.getFullYear();
+
+						today = mm + '/' + dd + '/' + yyyy;
+						var endDateInputBox = document.getElementById(element);
+						endDateInputBox.value = today;
+					}
+					</script>
+				</div>
+				<div class="ComparisonActivityArea">
+					<div class="comparison-data-title">Activity to analyze:</div>
+					<select id="ComparisonActivitySelector" name="comparisonActivity[]" multiple="multiple" size="3" class="comparison-dashboard-dropdown">
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-header">
+				When and what change?
+			</div>
+			<div class="card-body">					
+				<div class="ComparisonDateOfChange">
+					<div class="comparison-data-title">Date of method change:</div>
+					<input id="comparisonDateOfChange" class="ComparisonDateInput" name="comparisonDateOfChange" value="{{comparisonDateOfChange}}">
+				</div>
+				<div class="ComparisonNote">
+					<div class="comparison-data-title">What change did you make?</div>
+					<input id="comparisonNote" class="ComparisonNoteInput" name="ComparisonNote" value="Enter details of the change here">
+				</div>
+				<script>
+				function compare() 
+				{
+					var options = $('#RanchBlockSublotSelector option:selected');
+
+					var ranches = $.map(options ,function(option) {
+						return option.value;
+					});
+					
+					crop = document.getElementById("ComparisonCropSelector").value;
+					plantingMethod = document.getElementById("ComparisonPlantingMethodSelector").value;
+					comparisonStartDate = document.getElementById("comparisonStartDate").value;
+					comparisonEndDate = document.getElementById("comparisonEndDate").value;
+					activity = document.getElementById("ComparisonActivitySelector").value;
+					comparisonDateOfChange = document.getElementById("comparisonDateOfChange").value;
+					comparisonNote = document.getElementById("comparisonNote").value;
+					$.ajax({ 
+						url: "{{ url_for('compare') }}", 
+						type: 'POST', 
+						data: {
+							'client': "{{client}}",
+							'ranches': ranches,
+							'crop': crop,
+							'plantingMethod': plantingMethod,
+							'comparisonStartDate': comparisonStartDate,
+							'comparisonEndDate': comparisonEndDate,
+							'activity': activity,
+							'comparisonDateOfChange': comparisonDateOfChange,
+							'comparisonNote': comparisonNote,
+						},
+						beforeSend: function() {
+							$(".analyzing").show();
+						},
+						success: function(response){ 
+							$('.ComparisonArea').html(response);
+						}
+					}); 	
+				}
+				</script>
+				<input type='button' class='comparison-dashboard-button' onclick='compare()' value='Analyze'><img class="analyzing" src="{{url_for('static', filename='img/spinner.gif')}}">
+			</div>
+		</div>
+	</div>
+
+
+
+	
+	<div class="ComparisonResultArea" id="ComparisonResultArea">
+		<div class="card-deck">
+			<div class="card">
+		<!-- <div class="ComparisonLineChartArea"> -->
+				<div id="ComparisonLineChartContainer" style="height: 370px; width: 100%;"></div>
+				<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+		<!-- </div> -->
+			</div>
+			<div class="card">
+		<!-- <div class="ComparisonBarChartArea"> -->
+				<div id="ComparisonBarChartContainer" style="height: 370px; width: 100%;"></div>
+				<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>			
+		<!-- </div> -->
+			</div>
+			<div class="card">
+				<div class="ComparisonSynopsisArea">
+					{{comparisonMessage|safe}}
+				</div>
+			</div>
+		</div>
+	</div>
+	<br>
+	<script>
+	function deleteComparison(thisTitle, thisText) 
+	{
+		$.ajax({ 
+			url: "{{ url_for('deleteComparison') }}", 
+			type: 'POST', 
+			data: {
+				'title': thisTitle,
+				'text': thisText,
+				'client': "{{client}}",
+			},
+			success: function(response){ 
+				$('.PastComparisonsStack').html(response);
+			}
+		}); 	
+	}
+	</script>
+	<script>
+	function saveComparison(thisTitle, thisText) 
+	{
+		$.ajax({ 
+			url: "{{ url_for('saveComparison') }}", 
+			type: 'POST', 
+			data: {
+				'title': thisTitle,
+				'text': thisText,
+				'client': "{{client}}",
+			},
+			success: function(response){ 
+				$('.PastComparisonsStack').html(response);
+				$('.ComparisonSynopsisArea').html("");
+			}
+		}); 	
+	}
+	</script>
+	<script>
+	function mailComparison(eventt, details, datee, lossOrGain, posOrNeg)
+	{					
+	
+		address = document.getElementById("comparisonAddress").value;
+					
+		if (address.indexOf("@") < 0)
+		{
+			alert("Please enter a valid email address before attempting to send.");
+			return null
+		}
+		$.ajax({ 
+			url: "{{ url_for('emailComparison') }}", 
+			type: 'POST', 
+			data: {
+				'event': eventt,
+				'details': details,
+				'date': datee,
+				'lossOrGain': lossOrGain,
+				'address': address,
+				'posOrNeg': posOrNeg
+			},
+			success: function(response){ 
+				alert('Comparison data was successfully emailed');
+			}
+		});
+	}
+	</script>
+	<div class="PastComparisonsStack">
+		<div class="comparison-data-title">Past comparisons:</div>
+		<div class="card-stack" id="savedCards">
+			{{ComparisonCards|safe}}
+		</div>
+	</div>

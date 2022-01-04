@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Agxactly web portal">
+  <meta name="keywords" content="translation">
+  <meta name="generator" content="Responsive Site Designer 1.5.1419">
+  <title>LinkedIn newsfeed back door</title>
+  <link rel="stylesheet" href="{{url_for('static', filename='css/LoginStyle1022.css')}}">
+</head>
+
+<body>
+<div class="grid-container">
+	<div class="TitleBar">
+		LinkedIn newsfeed back door
+	</div>
+	<div class="UsernameAndPassword">
+        <form action="" method="post">
+			<input type="text" class="LoginTextInput" placeholder="id" name="id">
+			<br>
+			<textarea placeholder="html for post embedding" name="content" rows="4" cols="50"></textarea>
+			<br>
+			<input class="btn btn-default" type="submit" value="Upload this post">
+        </form>
+        {% if message %}
+			<p class="error"><strong>Result: </strong> {{ message }}
+        {% endif %}
+	</div>
+</div>
+</body>
+
+</html>
+
+
+

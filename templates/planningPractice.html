@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="{{url_for('static', filename='js/bootstrap.js')}}"></script>
+	<link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}">
+	<link rel="stylesheet" href="{{url_for('static', filename='css/DashboardStyle0113d.css')}}">
+</head>
+<body>
+
+<div class="card-stack">
+	<div class="card" style="width:800px">
+		<div id="calendarHolder">
+			<canvas id="calendarCanvas" height="50px" width="800px" style="border:1px solid #d3d3d3;">
+				Your browser does not support the HTML5 canvas tag.
+			</canvas>
+		</div>
+	</div>
+	<div class="card" style="width:800px">
+		<h2><center><div id="hoverDate" style="color:grey"> -- </div></center></h2>
+	</div>
+	<div class="card" style="width:800px">
+		<div id="schedule"></div>
+		<div id="saveOrClear">
+			<input type="button" class="dashboard-button" onclick="saveSchedule()" value="Save this schedule">
+			<input type="button" class="dashboard-button" onclick="clearSchedule()" value="Clear">
+		</div>
+	</div>
+	
+<script>
+
+var saveOrClearDiv = document.getElementById("saveOrClear")
+saveOrClearDiv.style.display = "none";
+
+var canvas;
+var ctx;
+var dpi = window.devicePixelRatio;
+var c=document.getElementById("calendarCanvas");
+var x = 0;
+var y = 0;
+var WIDTH = 15;
+var HEIGHT = 15;
+
+// we will need the wet date from the database
+var wetDate = new Date(2020, 11, 17)
+var stringWetDate = "11/17/2020"
+
+// we will also need the harvest date from the database
+var harvestDate = new Date(2021, 1, 3)
+var stringHarvestDate = "1/2/2021"
+
+// with these 2 dates, we can calculate the number of boxes (days) we'll need in the canvas
+// the dateSpan is in milliseconds, by default, so we have to divide it by a bunch of numbers to get it to days
+var dateSpan = parseInt((harvestDate - wetDate)/24/60/60/1000)
+
+// this will be an array of strings representing dates, which will appear in 
+// a div below or above the canvas, to let the user know which date (horizontal position) they are at
+var days = []
+
+var existingEventsInCalendar = []
+
+var draggablesBoundsAndNames = [[15, 30, 5, 15, "Roboweeder"], [45, 60, 5, 15, "Cultivation"], [75, 90, 5, 15, "Weeding"], [105, 120, 5, 15, "Sidedress"]]
+
+
+init();
+
+
+// the canvas is 500 pixels wide, so we have to draw little squares to represent each day 
+// on the canvas, evenly-spaced.  How wide should each square be?
+var dayWidth = parseInt(canvas.width/dateSpan)
+
+// the actual canvas width and height will be variable, so here let's define 
+// a number of vertical dimensions, based on the canvas height this time
+dateBlocksBottom = canvas.height - 10 // the date blocks will be 10 pixels from the bottom of the canvas
+dateBlocksTop = canvas.height - 25 // the date blocks will be 15 pixels high
+dateCaretsBottom = canvas.height - 35 // the "Wet Date" and "Harvest Date" carets will be 10px above the date blocks
+dateCaretsTop = canvas.height - 55 // the "Wet Date" and "Harvest Date" carets will be 20 px high
+caretPoints = canvas.height - 17 // the pointers of all carets will rest vertically in the middle of the date block
+
+
+function fillDaysList()
+{
+	// here, we fill the days[] list defined above
+	for (var d = 0; d < dateSpan; d++)
+	{
+		for (var dy = 0; dy < dayWidth; dy++)
+		{
+			var dateForCanvas = new Date(wetDate.getTime() +  d*24*60*60*1000)
+			var dd = dateForCanvas.getDate();
+			var mm = dateForCanvas.getMonth();
+			var y = dateForCanvas.getFullYear();
+			
+			if (mm == 0) 
+			{ 
+				mm = 12;
+				y = y - 1;
+			}
+
+			var dateForCanvasFormatted = mm + '/'+ dd + '/'+ y;
+			days.push(dateForCanvasFormatted)
+		}
+	}
+
+	// because of rounding errors, the last little stretch of canvas will have no
+	// days associated, so will throw an 'undefined' error.  Let's fill the rest of the
+	// days[] list with blanks so this doesn't happen
+	for (var d = days.length; d < canvas.width; d++)
+	{
+		days.push(dateForCanvasFormatted);
+	}
+}
+
+
+
+function init() {
+ canvas = document.getElementById("calendarCanvas");
+ ctx = canvas.getContext("2d");
+ fix_dpi;
+ return setInterval(draw, 10);
+}
+
+function draw() {
+	if (inHand == true)
+	{
+		clear();
+		makeCalendar();
+		fillEventsBox();
+		populateDroppedEvents();
+
+		drawBox(x - 7, y - 7, 15, 15, whatInHand)
+	}
+}
+
+
+
+function populateDroppedEvents()
+{
+	for (var e = 0; e < existingEventsInCalendar.length; e++)
+	{
+		drawBox(existingEventsInCalendar[e][0], existingEventsInCalendar[e][1], 15, 15, existingEventsInCalendar[e][2]);
+	}
+}
+
+
+function fix_dpi() 
+{
+//create a style object that returns width and height
+	let style = {
+		height() {
+			return +getComputedStyle(canvas).getPropertyValue('height').slice(0,-2);
+		},
+		width() {
+			return +getComputedStyle(canvas).getPropertyValue('width').slice(0,-2);
+		}
+	}
+	//set the correct attributes for a crystal clear image!
+	canvas.setAttribute('width', style.width() * dpi);
+	canvas.setAttribute('height', style.height() * dpi);
+}
+
+function clear() {
+ ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+
+fillDaysList();
+makeCalendar();
+fillEventsBox();
+
+
+
+
+
+
+
+
+
+
+function makeCalendar()
+{
+	movingX = 0;
+	for (var b = 0; b < dayWidth*dateSpan; b = b + dayWidth)
+	{
+		drawBox(movingX, dateBlocksTop, b, dateBlocksBottom - dateBlocksTop, "plain")
+		movingX = b;
+	}
+}
+
+function drawBox(startx, starty, width, height, whatKind)
+{
+	var ss;
+	var fs;
+	var lw;
+	var contents;
+	if (whatKind == "plain")
+	{
+		ss = "#000000";
+		fs = "#FFFFFF";
+		lw = 1;
+		contents = "";
+	}
+	if (whatKind == "Roboweeder")
+	{
+		ss = "#000000"
+		fs = "#2267B5"
+		lw = 2;
+		contents = "R";
+	}
+	if (whatKind == "Cultivation")
+	{
+		ss = "#000000";
+		fs = "#FC6F03";
+		lw = 2;
+		contents = "C";
+	}
+	if (whatKind == "Weeding")
+	{
+		ss = "#000000";
+		fs = "#B45914";
+		lw = 2;
+		contents = "W";
+	}
+	if (whatKind == "Sidedress")
+	{
+		ss = "#000000";
+		fs = "#331B09";
+		lw = 2;
+		contents = "S";
+	}
+	var c=document.getElementById("calendarCanvas");
+	ctx=c.getContext("2d");
+	ctx.beginPath();
+	ctx.moveTo(startx, starty)
+	ctx.lineTo(startx, starty + height)
+	ctx.lineTo(startx + width, starty + height);
+	ctx.lineTo(startx + width, starty);
+	ctx.lineTo(startx, starty)
+	ctx.closePath();
+	ctx.strokeStyle = ss;
+	ctx.fillStyle = fs;
+	ctx.lineWidth = lw;
+	ctx.fill();
+	drawLetterOnEventBlock(contents, startx, starty);
+	ctx.stroke();
+
+}
+
+function drawLetterOnEventBlock(contents, startx, starty)
+{
+	if (contents != "")
+	{
+		placeText(contents, startx+3, starty+12);
+	}
+}
+
+function placeText(text, hoverDate, ypos)
+{
+	ctx.font = "12px Arial";
+	ctx.fillStyle = "white";
+	ctx.fillText(text, hoverDate, ypos)
+}
+
+function fillEventsBox()
+{
+	for (var e = 0; e < draggablesBoundsAndNames.length; e++)
+	{
+		drawBox(draggablesBoundsAndNames[e][0], draggablesBoundsAndNames[e][2], 15, 15, draggablesBoundsAndNames[e][4]);
+	}
+}
+
+
+
+
+var inHand = false;
+var whatInHand = "";
+
+canvas.onmousedown = pickUpEvent;
+canvas.onmousemove = getMousePos;
+canvas.onmouseup = whereYouAt;
+
+function pickUpEvent(evt) 
+{
+	if (onDraggable() != "not on draggable")
+	{
+		inHand = true;
+	}
+}
+
+function onDraggable()
+{
+	for (var d = 0; d < draggablesBoundsAndNames.length; d++)
+	{
+		if ((x > draggablesBoundsAndNames[d][0]) && (x < draggablesBoundsAndNames[d][1]) && (y > draggablesBoundsAndNames[d][2]) && (y < draggablesBoundsAndNames[d][3]))
+		{
+			whatInHand = draggablesBoundsAndNames[d][4];
+			return draggablesBoundsAndNames[d][4];
+		}
+	}
+	return "not on draggable"
+}
+function inCalendar()
+{
+	if ((y < dateBlocksBottom) && (y > dateBlocksTop))
+	{
+		return true;
+	}
+}
+
+function getMousePos(evt)
+{
+
+	var c = document.getElementById("calendarHolder");
+	var rect = c.getBoundingClientRect();
+	var xpo = document.getElementById("hoverDate");
+	
+	x = evt.clientX - rect.left
+	y = evt.clientY - rect.top;
+	
+
+	
+	if (days[evt.clientX - rect.left] == stringWetDate)
+	{
+		xpo.innerHTML = days[evt.clientX - rect.left] + "<span style='color:green'><b> (wet date)</b></span>";
+	}
+	else if (days[evt.clientX - rect.left] == stringHarvestDate)
+	{
+		xpo.innerHTML = days[evt.clientX - rect.left] + "<span style='color:green'><b> (harvest date)</b></span>";
+	}
+	else if (!days[evt.clientX - rect.left])
+	{
+		xpo.innerHTML = " -- ";
+	}
+	else 
+	{
+		xpo.innerHTML = days[evt.clientX - rect.left];
+	}
+
+} 
+function whereYouAt(evt) 
+{
+	if ((inHand == true) && (inCalendar() == true))
+	{
+		var c = document.getElementById("calendarHolder");
+		var rect = c.getBoundingClientRect();
+		var xpo = document.getElementById("hoverDate");
+		var schedule = document.getElementById("schedule");
+		
+		schedule.innerHTML = schedule.innerHTML + "<b>" + whatInHand + "</b> scheduled for " + xpo.innerHTML + "<br>";
+
+		inHand = false;
+		
+		clear();
+		makeCalendar();
+		fillEventsBox();
+		populateDroppedEvents();
+		
+		drawBox(x - 7, dateBlocksTop, 15, 15, whatInHand)
+		var justDroppedEventCoords = [x - 7, dateBlocksTop, whatInHand]
+		existingEventsInCalendar.push(justDroppedEventCoords)
+		
+		saveOrClearDiv.style.display = "block";
+		
+		whatInHand = ""
+	}
+}
+</script> 
+</body>
+</html>

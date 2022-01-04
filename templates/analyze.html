@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Agxactly web portal">
+    <meta name="keywords" content="translation">
+    <meta name="generator" content="Responsive Site Designer 1.5.1419">
+    <title>AGXactly Web Portal</title>
+	<script src="{{url_for('static', filename='js/bootstrap.js')}}"></script>
+	<link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/LoginStyle1022.css')}}">
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js" integrity="sha256-spTpc4lvj4dOkKjrGokIrHkJgNA0xMS98Pw9N7ir9oI=" crossorigin="anonymous"></script>
+	<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+	
+		{% for r in ranchesForSelection %}
+			var o = new Option("{{r}}", "{{r}}");
+			$(o).html("{{r}}");
+			$("#RanchBlockSublotSelector").append(o);
+		{% endfor %}
+		})
+	</script>
+</head>
+
+<body>
+<div class="grid-container">
+	<div class="TitleBar">
+		Online crop-counting interface
+	</div>
+	<div class="card-group">
+		<div class="card">
+			<div class="AGXactlyLogo">
+				Put all flyover images into the Google Drive folder titled "flyoverImages," then select a flight date and Ranch/Block Sublot from the box on the right, and click "Start the count."  
+				<br><br><em>There is no need to keep this page open after clicking "Start the count."</em>  The count will proceed automatically in the cloud, and the spreadsheet will be updated at the end.
+			</div>
+		</div>
+		
+		<div class="card">
+			<div class="RanchBlockSublotDateFlown">
+				<b>Ranch / Block, Sublot and Flight Date</b>
+				<br>
+				<form action="" method="post">
+					<select id="RanchBlockSublotSelector" name="rtv[]" multiple="multiple" size="3" class="dashboard-dropdown">
+					</select>
+					<span style="color:blue">Or, enter a new Ranch/Block Sublot, containing one space after the ranch name only (for example Agxa 45D):</span>
+					<br><input class="TextInput" name="rbs">
+					<br>
+					<br>--------------------------
+					<br><b>Flight Date:</b> 
+					<br><input class="TextInput" name="flyoverDate" value="7/1/2020">
+					<input type="submit" class="dashboard-button" id="submit_data" value="Start the count" />
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="card">
+        {% if result %}
+			<p><strong>Result:</strong> {{ result }}
+        {% endif %}
+	</div>
+</div>
+</body>
+
+</html>
+
+
+

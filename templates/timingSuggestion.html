@@ -1,0 +1,46 @@
+
+	<script>
+	$(document).ready(function() {
+	
+		function compareDataPointX(dataPoint1, dataPoint2) {
+		  return dataPoint1.x - dataPoint2.x;
+		}
+	
+		// this "thisPacket" variable is crazy, [["Event name", "ranch name", "chart making string"]]
+		{% for e in thisPacket %}
+			var containerName = "TimingContainer"
+			var timingChart = new CanvasJS.Chart(containerName, {
+				animationEnabled: true,
+				zoomEnabled: true,
+				panEnabled: true,
+				title: {
+					text: "Risk of loss associated with performing {{e[0]}} on {{e[1]}} for each date in the time window",
+					fontFamily: "Verdana, Geneva",
+					fontSize: 20
+				},
+				axisX: {
+					title: "Date in the chosen time window",
+				},
+				axisY: {
+					title: "Percent crop loss predicted",
+					suffix: "%"
+				},
+				toolTip: {
+					shared: false,
+					content: "{x}: {y}%" 
+				},
+				legend: {
+					cursor: "pointer",
+					verticalAlign: "top",
+					horizontalAlign: "center",
+				},
+				data: [{{e[2]|safe}}]
+			});
+			timingChart.options.data[0].dataPoints.sort(compareDataPointX);
+			timingChart.render();	
+		{% endfor %}
+	});
+	</script>
+
+	<div id="TimingContainer" style="height: 370px; width: 100%;"></div>
+	<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>

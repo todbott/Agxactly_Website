@@ -1,0 +1,16 @@
+runtime: python38
+
+
+handlers:
+- url: /static
+  static_dir: static
+- url: /.*
+  script: auto
+  
+ 
+env_variables:
+  SECRET_KEY: 'sk_live_l7kcnl3vHhi4NOa7kvshs20m'
+  PUBLISHABLE_KEY: 'pk_live_epitTE223QO8gp0vvnBQL5UR'
+  MAILJET_API_KEY: 0b97270bcbf625aab8a9ac84f5c97806
+  MAILJET_API_SECRET: 3f82ee79894a1cbcc682c9aad5ace61a
+  MAILJET_SENDER: tgillies@agxactly.com

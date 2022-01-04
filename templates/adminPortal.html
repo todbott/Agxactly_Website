@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Agxactly web portal">
+    <meta name="keywords" content="translation">
+    <meta name="generator" content="Responsive Site Designer 1.5.1419">
+    <title>AGXactly Admin Portal</title>
+	<link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/LoginStyle1022.css')}}">
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js" integrity="sha256-spTpc4lvj4dOkKjrGokIrHkJgNA0xMS98Pw9N7ir9oI=" crossorigin="anonymous"></script>
+	<script src="{{url_for('static', filename='js/bootstrap.js')}}"></script>
+	<script type="text/javascript" charset="utf-8">
+	$(document).ready(function() {
+	
+		var overallChartArray = [];
+		
+		var ar = {{allRecordsForPage|safe}}
+		var howManyRows = Object.keys(ar).length;
+		
+
+		count = 1
+		for (var i = 0; i < howManyRows; i++) 
+		{
+			if (count%2 == 0) {
+				$('.overallTable').append('<tr class="trEven"><td style="width:20%">' + ar[String(i)]["username"] + '</td><td style="width:40%">' + ar[String(i)]["login_time"] + '</td><td style="width:20%">' + ar[String(i)]["ip_address"] + '</td><td style="width:20%">' + ar[String(i)]["os"] + '</td><td style="width:20%">' + ar[String(i)]["browser"] + '</td></tr>');
+			} else {
+				$('.overallTable').append('<tr class="trOdd"><td style="width:20%">' + ar[String(i)]["username"] + '</td><td style="width:40%">' + ar[String(i)]["login_time"] + '</td><td style="width:20%">' + ar[String(i)]["ip_address"] + '</td><td style="width:20%">' + ar[String(i)]["os"] + '</td><td style="width:20%">' + ar[String(i)]["browser"] + '</td></tr>');
+			}
+			count += 1
+		}	
+
+		});
+	</script>
+</head>
+
+<body>
+<div class="grid-container">
+	<div class="TitleBar">
+		AGXactly Admin Side
+	</div>
+	<div class="card-stack">
+		<div class="card">
+			<div class="AGXactlyLogo">
+				Here's a list of all logins since tracking began.
+			</div>
+		</div>
+		
+		<div class="card">
+			<table class="overallTable">
+			  <thead>
+				<tr class="tableHeader">
+					<th class="sticky-header">User name</th>
+					<th class="sticky-header">Login date and time</th>
+					<th class="sticky-header">IP address</th>
+					<th class="sticky-header">OS</th>
+					<th class="sticky-header">Browser</th>
+				</tr>
+			  </thead>
+			  <tbody>
+			  </tbody>
+			</table>
+		</div>
+		<div class="card">
+			<a href="{{ url_for('index') }}">Logout</a>
+		</div>
+	</div>
+</div>
+</body>
+
+</html>
+
+

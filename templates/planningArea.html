@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+	<form action="" method="post">
+		<div class="SelectedAreaTitle">
+			{{oneToShow}}
+		</div>
+		<div class="CropSpecificsArea">
+			<div class="planning-card">
+				<div class="planning-card-container">
+					<div class="planning-title">Crop specifics:</div>
+					<input class="ComparisonNoteInput" name="CropSpecifics" value="{{CropSpecifics}}">
+				</div>
+			</div>
+		</div>
+		<div class="DatePlantedArea">
+			<div class="planning-card">
+				<div class="planning-card-container">
+					<div class="planning-title">Date planted:</div>
+					<input class="ComparisonNoteInput" name="DatePlanted" value="{{DatePlanted}}">
+				</div>
+			</div>
+		</div>
+		<div class="YieldLastYearArea">
+			<div class="planning-card">
+				<div class="planning-card-container">
+					<div class="planning-title">Yeild last year (in kilograms):</div>
+					<input class="ComparisonNoteInput" name="YieldLastYear" value="{{YieldLastYear}}">
+				</div>
+			</div>
+		</div>
+		<div class="LossLastYearArea">
+			<div class="planning-card">
+				<div class="planning-card-container">
+					<div class="planning-title">Loss last year:</div>
+					<input class="ComparisonNoteInput" name="LossLastYear" value="{{LossLastYear}}">
+				</div>
+			</div>
+		</div>
+		<div class="InputCostsLastYearArea">
+			<div class="planning-card">
+				<div class="planning-card-container">
+					<div class="planning-title">Input costs last year (in $USD):</div>
+					<input class="ComparisonNoteInput" name="InputCostsLastYear" value="{{InputCostsLastYear}}">
+				</div>
+			</div>
+		</div>
+		<div class="FertilizerUsedLastYearArea">
+			<div class="planning-card">
+				<div class="planning-card-container">
+					<div class="planning-title">Fertilizer used last year (in kilograms):</div>
+					<input class="ComparisonNoteInput" name="FertilizerUsedLastYear" value="{{FertilizerUsedLastYear}}">
+				</div>
+			</div>
+		</div>
+		<div class="CurrentYearsInRotationArea">
+			<div class="planning-card">
+				<div class="planning-card-container">
+					<div class="planning-title">Current number of years in rotation:</div>
+					<input class="ComparisonNoteInput" name="YearsInRotation" value="{{YearsInRotation}}">
+				</div>
+			</div>
+		</div>
+		<div class="NextFallowArea">
+			<div class="planning-card">
+				<div class="planning-card-container">
+					<div class="planning-title">Next fallow season:</div>
+					<input class="ComparisonNoteInput" name="NextFallowSeason" value="{{NextFallowSeason}}">
+				</div>
+			</div>
+		</div>
+		<input type="hidden" id="planningTabShowing" name="tabShowing" value="Planning">
+		<input type="hidden" name="typeOfPost" value="plan">
+		<input type="submit" class="comparison-dashboard-button" id="plan" value="Update">
+	</form>
+</body>

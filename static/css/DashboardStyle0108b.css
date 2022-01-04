@@ -1,0 +1,738 @@
+html, body {
+  height: 100%; 
+  margin-left: 90px;
+ }
+ 
+
+
+.Count, .EventsAnalysis, .Stress, .Activity { 
+	height: 100%;
+}
+
+
+.AcresFlownPerDateChart { grid-area: AcresFlownPerDateChart; }
+
+.AGXactlyLogo { grid-area: AGXactlyLogo; }
+.CustomerLogo { grid-area: CustomerLogo; }
+
+.RanchBlockSublotDateFlown { 
+  display: grid;
+  grid-template-columns: 300px 300px;
+  grid-template-rows: 30px 80px 30px 25px 20px;
+  gap: 1px 1px;
+  grid-template-areas:
+    "RanchBlockSublotHeader RanchBlockSublotHeader"
+    "RanchBlock Sublot"
+	"ShowAll ShowAll"
+    "DateFlown DateFlown"
+	"CurrentlyShowing CurrentlyShowing";
+  grid-area: RanchBlockSublotDateFlown;
+  font-size: 16px;
+}
+.RanchBlockSublotHeader { grid-area: RanchBlockSublotHeader; float: left; }
+.RanchBlock { grid-area: RanchBlock; float: left; }
+.Sublot { grid-area: Sublot; float: left; }
+.ShowAll { grid-area: ShowAll; float: left; }
+.DateFlown { 
+	grid-area: DateFlown;
+	font-size: 18px;
+	float: left;
+	}
+.CurrentlyShowing { 
+	grid-area: CurrentlyShowing; 
+	float: left;
+	font-size: 75%;
+}
+
+
+
+.AcresArea {
+  display: grid;
+  grid-template-columns: 200px 200px 200px 300px 300px;
+  grid-template-rows: 100px 100px 200px;
+  gap: 1px 1px;
+  grid-template-areas:
+    "LandAcres AcresFlown AcresFlown MissingPercent MissingChart" 
+	"ExpectedCrops LatestCropCount CropsLost MissingPercent MissingChart"
+	"OverallChart OverallChart OverallChart OverallChart";
+  grid-area: AcresArea;
+}
+.LandAcres { grid-area: LandAcres; }
+.AcresFlown { grid-area: AcresFlown; }
+.ExpectedCrops { grid-area: ExpectedCrops; }
+.LatestCropCount { grid-area: LatestCropCount; }
+.CropsLost { grid-area: CropsLost; }
+.MissingPercent { grid-area: MissingPercent; }
+.MissingChart { grid-area: MissingChart;}
+.OverallChart { grid-area: OverallChart; }
+
+.ComparisonDataArea {
+  display: grid;
+  grid-template-columns: 200px 200px 1000px;
+  grid-template-rows: 80px 60px 60px;
+  gap: 5px 5px;
+  grid-template-areas:
+    "ComparisonCropArea ComparisonPlantingMethodArea ComparisonActivityArea" 
+	"ComparisonDateRangeArea ComparisonDateRangeArea ComparisonDateOfChange"
+	"ComparisonNote ComparisonNote ComparisonNote";
+  grid-area: ComparisonDataArea;
+}	
+.ComparisonCropArea { grid-area: ComparisonCropArea; }
+.ComparisonPlantingMethodArea { grid-area: ComparisonPlantingMethodArea; }
+.ComparisonActivityArea { grid-area: ComparisonActivityArea; }
+.ComparisonDateRangeArea { grid-area: ComparisonDateRangeArea; }
+.ComparisonDateOfChange { grid-area: ComparisonDateOfChange; }
+.ComparisonNote { grid-area: ComparisonNote; }
+.ComparisonResultArea { grid-area: ComparisonResultArea; }	
+.ComparisonLineChartArea { grid-area: ComparisonLineChartArea; }
+.ComparisonBarChartArea { grid-area: ComparisonBarChartArea; }
+.ComparisonSynopsisArea { grid-area: ComparisonSynopsisArea; }
+.PastComparisonsStack { grid-area: PastComparisonsStack; }
+
+.CountTabChartsArea {
+  display: grid;
+  grid-template-columns: 700px 400px 400px;
+  grid-template-rows: 370px;
+  gap: 1px 1px;
+  grid-template-areas:
+    "CropsLostPerDateArea TopFiveAsPercentArea TopFiveArea";
+  grid-area: CountTabChartsArea;
+}	
+.CropsLostPerDateArea { grid-area: CropsLostPerDateArea; }
+.TopFiveAsPercentArea { grid-area: TopFiveAsPercentArea; }
+.TopFiveArea { grid-area: TopFiveArea; }
+
+
+.EventsArea {
+  display: grid;
+  grid-template-columns: 600px 600px;
+  grid-template-rows: 400px;
+  gap: 1px 1px;
+  grid-template-areas:
+    "EventsTableArea EventsPieChartArea"
+  grid-area: EventsArea;
+}	
+.EventsTableArea { grid-area: EventsTableArea; }
+.EventsPieChartArea { grid-area: EventsPieChartArea; }
+.EventsAddFictitiousArea { 
+  display: grid;
+  grid-template-columns: 400px;
+  grid-template-rows: 40px 65px 65px;
+  gap: 1px 1px;
+  grid-template-areas:
+    "AddEventBanner"
+	"EventNameArea"
+	"EventPercentArea";
+  grid-area: EventsAddFictitiousArea; 
+}
+.AddEventBanner {
+  grid-area: AddEventBanner;
+  background-color: #547634;
+  color: #deab3d;
+  text-align: center;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 24px;
+}
+.EventNameArea { grid-area: EventNameArea; }
+.EventPercentArea { grid-area: EventPercentArea; }
+.ExistingEvents { grid-area: ExistingEvents; }
+
+
+.NDVIArea {
+  display: grid;
+  grid-template-columns: 200px 300px 900px;
+  grid-template-rows: 100px 300px;
+  gap: 1px 1px;
+  grid-template-areas:
+    "NDVIAverageArea NDVIAcresFlownArea NDVIBigTable"
+	"NDVISmallTable NDVISmallTable NDVIBigTable";
+  grid-area: NDVIArea;
+}	
+.NDVIAverageArea {grid-area: NDVIAverageArea; }
+.NDVIAcresFlownArea {grid-area: NDVIAcresFlownArea; }
+.NDVISmallTable {grid-area: NDVISmallTable; }
+.NDVIBigTable { grid-area: NDVIBigTable; }
+.NDVITabChartsArea {
+  display: grid;
+  grid-template-columns: 600px 800px;
+  grid-template-rows: 370px;
+  gap: 1px 1px;
+  grid-template-areas:
+    "NDVIBarChart NDVILineChart";
+  grid-area: NDVITabChartsArea;
+}	
+.NDVIBarChart { grid-area: NDVIBarChart; }
+.NDVILineChart { grid-area: NDVILineChart; }
+
+
+
+.PlanningArea {
+  display: grid;
+  grid-template-columns: 520px 880px;
+  grid-template-rows: 40px 50px 50px 50px 50px;
+  gap: 1px 1px;
+  grid-template-areas:
+	"mapHolderArea PlanningDataArea"
+    "mapHolderArea PlanningDataArea"
+	"mapHolderArea PlanningDataArea"
+	"mapHolderArea PlanningDataArea"
+	"mapHolderArea PlanningDataArea";
+  grid-area: PlanningArea;
+}	
+.mapHolderArea { grid-area: mapHolderArea; }
+
+.PlanningDataArea {
+  display: grid;
+  grid-template-columns: 480px 400px;
+  grid-template-rows: 40px 50px 50px 50px 50px;
+  gap: 1px 1px;
+  grid-template-areas:	
+    "SelectedAreaTitle SelectedAreaTitle"  
+    "CropSpecificsArea DatePlantedArea"
+	"YieldLastYearArea LossLastYearArea"
+	"InputCostsLastYearArea FertilizerUsedLastYearArea"
+	"CurrentYearsInRotationArea NextFallowArea";
+  grid-area: PlanningDataArea;
+}
+.SelectedAreaTitle { 
+  grid-area: SelectedAreaTitle;
+  background-color: #547634;
+  color: #deab3d;
+  text-align: center;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 24px;
+}
+.CropSpecificsArea { grid-area: CropSpecificsArea; }
+.DatePlantedArea { grid-area: DatePlantedArea; }
+.YieldLastYearArea { grid-area: YieldLastYearArea; }
+.LossLastYearArea { grid-area: LossLastYearArea; }
+.InputCostsLastYearArea { grid-area: InputCostsLastYearArea; }
+.FertilizerUsedLastYearArea { grid-area: FertilizerUsedLastYearArea; }
+.CurrentYearsInRotationArea { grid-area: CurrentYearsInRotationArea; }
+.NextFallowArea { grid-area: NextFallowArea; }
+  
+  
+  
+
+.NotificationsDataArea { 
+  display: grid;
+  grid-template-columns: 150px 200px 200px;
+  grid-template-rows: 10px 140px 300px;
+  gap: 5px 5px;
+  grid-template-areas:
+	"NotificationsHeader NotificationsHeader NotificationsHeader"
+    "NotificationsRanchBlock NotificationsSublots NotificationsEmailArea"
+	"NotificationsBuildingArea NotificationsBuildingArea NotificationsBuildingArea";
+  grid-area: NotificationsDataArea;
+}
+.NotificationsRanchBlock { grid-area: NotificationsRanchBlock; }
+.NotificationsSublots { grid-area: NotificationsSublots; }
+.NotificationsAddSublotsArea { grid-area: NotificationsAddSublotsArea; }
+.NotificationsEmailArea { grid-area: NotificationsEmailArea; }
+.NotificationsBuildingArea { grid-area: NotificationsBuildingArea;}
+.ExistingNotificationsStack { grid-area: ExistingNotificationsStack; }
+.NotificationsHeader { 
+  grid-area: NotificationsHeader;
+  background-color: #F9E79F;
+  color: black;
+  text-align: center;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 14px;
+}
+.AlertsDataArea { 
+  display: grid;
+  grid-template-columns: 150px 200px 200px;
+  grid-template-rows: 0px 130px 80px 300px;
+  gap: 5px 5px;
+  grid-template-areas:
+	"AlertsHeader AlertsHeader AlertsHeader"
+    "AlertsRanchBlock AlertsSublots AlertsEmailArea"
+	"AlertsConditionsArea AlertsConditionsArea AlertsConditionsArea"
+	"AlertsBuildingArea AlertsBuildingArea AlertsBuildingArea";
+  grid-area: AlertsDataArea;
+}	
+.AlertsRanchBlock { grid-area: AlertsRanchBlock; }
+.AlertsSublots { grid-area: AlertsSublots; }
+.AlertsAddSublotsArea { grid-area: AlertsAddSublotsArea; }
+.AlertsEmailArea { grid-area: AlertsEmailArea; }
+.AlertsConditionsArea { grid-area: AlertsConditionsArea }
+.AlertsBuildingArea { grid-area: AlertsBuildingArea;}
+.ExistingAlertsStack { grid-area: ExistingAlertsStack; }
+.AlertsHeader { 
+  grid-area: AlertsHeader;
+  background-color: #F5B7B1;
+  color: black;
+  text-align: center;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 14px;
+}
+
+
+
+.TitleBar { 
+  grid-area: TitleBar;
+  background-color: #547634;
+  color: #deab3d;
+  text-align: center;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 24px;
+}
+.FlyAnAcreBar {
+	grid-area: FlyAnAcreBar;
+	text-align: right;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 14px;
+}	
+
+.CustomerInfo {
+  display: grid;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 18px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 0.3fr 0.3fr 0.3fr 0.3fr 0.3fr;
+  gap: 1px 1px;
+  grid-template-areas:
+    "PreparedForLabel PreparedFor"
+    "CompanyNameLabel CompanyName"
+    "CropTypeLabel CropType"
+    "PreparedByLabel PreparedBy"
+	"LastUpdatedLabel LastUpdated";
+  grid-area: CustomerInfo;
+}
+
+.CustomerInfo > PreparedForLabel {
+  grid-area: PreparedForLabel;
+  background-color: #ddebda;
+}
+.CustomerInfo > CompanyNameLabel {
+  grid-area: CompanyNameLabel;
+  background-color: #ddebda;
+}
+.CustomerInfo > CropTypeLabel {
+  grid-area: CropTypeLabel;
+  background-color: #ddebda;
+}
+.CustomerInfo > PreparedByLabel {
+  grid-area: PreparedByLabel;
+  background-color: #ddebda;
+}
+.CustomerInfo > LastUpdatedLabel {
+  grid-area: LastUpdatedLabel;
+  background-color: #ddebda;
+}
+
+.CustomerInfo > PreparedFor {
+  grid-area: PreparedFor;
+  background-color: #f4f4f4;
+}
+.CustomerInfo > CompanyName {
+  grid-area: CompanyName;
+  background-color: #f4f4f4;
+}
+.CustomerInfo > CropType {
+  grid-area: CropType;
+  background-color: #f4f4f4;
+}
+.CustomerInfo > PreparedBy {
+  grid-area: PreparedBy;
+  background-color: #f4f4f4;
+}
+.CustomerInfo > LastUpdated {
+  grid-area: LastUpdated;
+  background-color: #f4f4f4;
+}
+
+.TextInput {
+  border-radius: 5px 5px 5px 5px;
+  width: 70px;
+  font-size: 12px;
+}
+.EndDateInput {
+  border-radius: 5px 0px 0px 5px;
+  width: 70px;
+  font-size: 12px;
+}
+.ComparisonDateInput {
+  border-radius: 5px 5px 5px 5px;
+  width: 120px;
+  font-size: 15px;
+}
+.PercentLossInput {
+  border-radius: 5px 5px 5px 5px;
+  width: 50px;
+  font-size: 15px;
+}
+.ComparisonEndDateInput {
+  border-radius: 5px 0px 0px 5px;
+  width: 120px;
+  font-size: 15px;
+}	
+.ComparisonNoteInput {
+  border-radius: 5px 5px 5px 5px;
+  width: 100%;
+  font-size: 15px;	
+}
+.LoginTextInput {
+	border-radius: 5px 5px 5px 5px;
+	width: 200px;
+}
+
+.dashboard-dropdown {
+  border-radius: 5px 5px 5px 5px;
+  width: 130px;
+  font-size: 12px;
+  height: 80px;
+}
+.comparison-dashboard-dropdown {
+  border-radius: 5px 5px 5px 5px;
+  width: 100%;
+  font-size: 15px;
+  height: 60px;
+}
+.alerts-dropdown {
+	border-radius: 5px 5px 5px 5px;
+	font-size: 15px;
+}
+.dashboard-button {
+	border-radius: 5px 5px 5px 5px;
+	font-size: 10px;
+	background-color: #c7c4b8;
+}
+.comparison-dashboard-button {
+	border-radius: 5px 5px 5px 5px;
+	font-size: 15px;
+	background-color: #c7c4b8;
+}
+.comparison-today-button {
+	border-radius: 0px 5px 5px 0px;
+	font-size: 15px;
+	background-color: #f2f2f2;
+}	
+.header-today-button {
+	border-radius: 0px 5px 5px 0px;
+	font-size: 12px;
+	background-color: #f2f2f2;
+}	
+.broccoliButton {
+	border-radius: 10px 10px 10px 10px;
+	font-size: 10px;
+	background-color:  #1e8449;
+	color: white;
+}
+.cornButton {
+	border-radius: 10px 10px 10px 10px;
+	font-size: 10px;
+	background-color: #9a7d0a;
+	color: white;
+}
+.overallTable, .NDVIOverallTable, .EventLossesTable, .TargetEventPercentsTable { 
+  border-collapse: collapse;
+  width: 100%;
+  overflow: auto;
+  display: block;
+  height: 400px;
+  overflow-y:scroll;
+}
+
+
+.NDVIEventsAndAverageTable {
+  border-collapse: collapse;
+  width: 100%;
+  overflow: auto;
+  display: block;
+  height: 300px;
+  overflow-y:scroll;
+}
+
+.cropsLostTable {
+  border-collapse: collapse;
+  width: 100%;
+  overflow: auto;
+  display: block;
+  height: 200px;
+  overflow-y:scroll;
+}
+
+th, td {
+  text-align: center;
+  padding: 8px;
+}
+
+
+th {
+    white-space: nowrap;
+}
+
+.trEven {background-color: #f4f4f4;}
+.trOdd {background-color: #ddebda;}
+.tableHeader {
+    background-color: #547634;
+    color: white;
+  	position: sticky; 
+	top: 0;
+}
+thead, tbody {
+    max-height: 500px;
+    overflow: auto;
+    background-color: #547634;
+    color: white;
+  	position: sticky; 
+	top: 0;
+}
+
+
+
+
+.eventHeader {  
+	background-color: #ffffff;
+	color: black;
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 16px;
+}
+
+.comparison-data-title {
+	background-color: #547634;
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 16px;
+	color: white;
+	padding: 2px 2px 2px 2px;
+}
+.notification-data-title {
+	background-color: #F9E79F;
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 12px;
+	color: black;
+	padding: 2px 2px 2px 2px;
+}
+.alert-data-title {
+	background-color: #F5B7B1;
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 12px;
+	color: black;
+	padding: 2px 2px 2px 2px;
+}
+
+.planning-card {
+  /* Add shadows to create the "card" effect */
+  background-color: #bfc9ca;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  margin: 2px 2px 2px 2px;
+}
+/* On mouse-over, add a deeper shadow */
+.planning-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+/* Add some padding inside the card container */
+.planning-card-container {
+  padding: 2px 4px;
+  height: auto;
+}
+.planning-title {
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 12px;
+	color:  #2471a3;
+}
+.planning-message {
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 10px;
+	color: black;
+	text-align: center;
+}
+
+.card-header {
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 20px;
+	font-weight: bold;
+	color: black;
+	text-align: center;	
+}
+.stat-card {
+  /* Add shadows to create the "card" effect */
+  background-color: #547634;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  margin: 2px 2px 2px 2px;
+}
+/* On mouse-over, add a deeper shadow */
+.stat-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+/* Add some padding inside the card container */
+.stat-card-container {
+  padding: 2px 16px;
+  height: auto;
+}
+.stat-title {
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 16px;
+	color: white;
+}
+.stat-number {
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 30px;
+	color: white;
+	text-align: center;
+}
+
+.comparison-card {
+  /* Add shadows to create the "card" effect */
+  background-color: #efefef;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  margin: 2px 2px 2px 2px;
+}
+/* On mouse-over, add a deeper shadow */
+.comparison-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+/* Add some padding inside the card container */
+.comparison-card-container {
+  padding: 2px 16px;
+  height: auto;
+}
+.comparison-title {
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 16px;
+	color: black;
+}
+.comparison-text {
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 12px;
+	color: black;
+	text-align: left;
+}
+
+
+.notification-card {
+  /* Add shadows to create the "card" effect */
+  background-color: #F9E79F;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  margin: 2px 2px 2px 2px;
+}
+/* On mouse-over, add a deeper shadow */
+.notification-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+/* Add some padding inside the card container */
+.notification-card-container {
+  padding: 2px 16px;
+  height: auto;
+}
+.notification-title {
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 16px;
+	color: black;
+}
+.notification-text {
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 12px;
+	color: black;
+	text-align: left;
+}
+
+
+.alert-card {
+  /* Add shadows to create the "card" effect */
+  background-color: #F5B7B1;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  margin: 2px 2px 2px 2px;
+}
+/* On mouse-over, add a deeper shadow */
+.alert-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+/* Add some padding inside the card container */
+.alert-card-container {
+  padding: 2px 16px;
+  height: auto;
+}
+.alert-title {
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 16px;
+	color: black;
+}
+.alert-text {
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 12px;
+	color: black;
+	text-align: left;
+}
+
+
+ /* Style the tab */
+.Tabs {
+  height: 100%; /* Full-height: remove this if you want "auto" height */
+  width: 160px; /* Set the width of the sidebar */
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  background-color: grey; /* Black */
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 20px;
+}
+
+/* The navigation menu links */
+.tablinks {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #B5B5B5;
+  display: block;
+}
+
+/* When you mouse over the navigation links, change their color */
+.tablinks:hover {
+  color: #f1f1f1;
+  cursor: pointer;
+}
+
+/* Tooltip for the flyanacregiveanacre pop up box */
+p.tooltip {
+  position: relative;
+  display: inline-block;
+  border: 2px dotted grey;
+  padding: 5px;
+  background-color: grey;
+  color: white;
+  border-radius: 5px 5px 5px 5px;
+}
+p.tooltip span {
+  opacity: 0.1;  
+  width: 600px;
+  background-color: #547634;
+  color: #deab3d;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  top: -1px;
+  left: -620px;
+
+  z-index: 1000000;
+  display: inline;
+  opacity: 0;
+  transition: 750ms all;
+}
+p.tooltip:hover span {
+    outline: none;
+    opacity: 1;
+}
+
+
+
+
+
+
+
+/* For presentation only, no need to copy the code below 
+.grid-container * {
+  border: 1px solid red;
+  position: relative;
+  }*/
